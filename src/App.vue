@@ -1,27 +1,39 @@
 <script setup lang="ts">
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
-import PaintCanvas from './components/PaintCanvas.vue'
+import "./defaultStyle.scss";
+import PaintCanvas from "./components/PaintCanvas.vue";
+import Toolbar from "./components/Toolbar.vue";
+import ColorSelector from "./components/commonUis/ColorSelector.vue";
+import { useCanvasStore } from "./stores/CanvasStore";
+
+const store = useCanvasStore()
 </script>
 
 <template>
-  <PaintCanvas />
+  <div class="toolbar">
+    <Toolbar>
+      <ColorSelector :value="store.$state.penColor" @input="v => store.setPenColor(v)" />
+    </Toolbar>
+  </div>
+  <div class="canvas">
+    <PaintCanvas />
+  </div>
 </template>
 
-<style>
-* {
-  box-sizing: border-box;
-}
-html, body, #app {
-  margin: 0;
-  position: relative;
-  height: 100%;
-}
+<style lang="scss" scoped>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  .toolbar {
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+    height: 64px;
+  }
+  .canvas {
+    position: absolute;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+  }
 }
 </style>

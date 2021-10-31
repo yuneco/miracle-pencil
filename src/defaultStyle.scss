@@ -1,0 +1,11 @@
+* {
+  box-sizing: border-box;
+}
+html, body, #app {
+  margin: 0;
+  position: relative;
+  height: 100%;
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
