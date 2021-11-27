@@ -5,25 +5,42 @@
       <CheckItem
         v-model="isPenStraight"
         edge="left"
-        icon="/src/assets/icons/icon-line.svg"
+        icon="icons/icon-line.svg"
       />
       <CheckItem
         v-model="isPenFreehand"
         edge="right"
-        icon="/src/assets/icons/icon-freehand.svg"
+        icon="icons/icon-freehand.svg"
       />
     </div>
     <SliderItem
       v-model="penCount1"
       label="PenCount"
-      icon="/src/assets/icons/icon-count.svg"
+      icon="icons/icon-count.svg"
       :min="1"
       :max="16"
     />
+
+    <div class="radioGroup">
+      <CheckItem
+        v-model="has2nd"
+        edge="left"
+        icon="icons/icon-2nd.svg"
+      />
     <SliderItem
+      v-model="penCount2"
+      label="PenCount"
+      icon="icons/icon-count.svg"
+      :min="1"
+      :max="16"
+      edge="right"
+    />
+    </div>
+
+<SliderItem
       v-model="store.penWidth"
       label="Width"
-      icon="/src/assets/icons/icon-width.svg"
+      icon="icons/icon-width.svg"
       :min="1"
       :max="50"
     />
@@ -44,6 +61,19 @@ const penCount1 = computed({
   },
   get: () => store.penCount[0],
 })
+const penCount2 = computed({
+  set: (v: number) => {
+    store.penCount = [store.penCount[0], v]
+  },
+  get: () => store.penCount[1],
+})
+const has2nd = computed({
+  set: (v: boolean) => {
+    penCount2.value = v ? penCount1.value : 0
+  },
+  get: () => penCount2.value >= 1,
+})
+
 
 const isPenStraight = computed({
   set: (v: boolean) => {

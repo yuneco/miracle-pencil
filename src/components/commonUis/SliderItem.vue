@@ -1,6 +1,6 @@
 <template>
   <div class="SliderItem" @pointerdown.prevent="ondown">
-    <PaletteItem :label="`${modelValue}${unit}`" :icon="icon"></PaletteItem>
+    <PaletteItem :label="`${modelValue}${unit}`" :icon="icon" :edge="edge"></PaletteItem>
     <div class="slider" v-show="state.isSliderVisible">
       <Slider :value="modelValue" :label="label" :min="min" :max="max" />
     </div>
@@ -22,6 +22,7 @@ const props = withDefaults(
     label?: string
     unit?: string
     icon?: string
+    edge?: 'left' | 'right' | 'both' | 'none'
   }>(),
   {
     min: 0,

@@ -72,8 +72,8 @@ const borderStyle = computed(() => {
 
   .icon {
     display: inline-block;
-    width: 32px;
-    height: 32px;
+    width: 30px;
+    height: 30px;
     background-repeat: no-repeat;
     background-position: center;
     pointer-events: none;
