@@ -4,7 +4,7 @@
 
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue';
-import {PaintCanvas} from 'sym-paint'
+import {PaintCanvas, Coordinate} from 'sym-paint'
 import { useCanvasStore } from '../stores/CanvasStore';
 
 const store = useCanvasStore()
@@ -15,18 +15,39 @@ onMounted(() => {
   console.log('moun')
   const parent = el.value
   if (!parent) return
-  canvas = new PaintCanvas(parent, parent.offsetWidth, parent.offsetHeight)
-  canvas.penCount = store.penCount
-  canvas.penColor = store.penColor
-  canvas.penWidth = store.penWidth
-  canvas.tool = store.isStraight ? 'draw:line' : 'draw'
-
-  console.log(store.penColor)
+  const cv = canvas = new PaintCanvas(parent, parent.offsetWidth, parent.offsetHeight)
+  cv.penCount = store.penCount
+  cv.penColor = store.penColor
+  cv.penWidth = store.penWidth
+  cv.tool = store.isStraight ? 'draw:line' : 'draw'
 
   // iOSのスクロール無効化
   parent.addEventListener('touchmove', (event) => {
     event.preventDefault()
   })
+
+// キャンバスからの変更要求を受け取りパレットの設定を変更
+cv.listenRequestZoom((scale) => {
+  //setting.scale = scale
+  cv.coord = cv.coord.clone({ scale })
+})
+cv.listenRequestScrollTo((pos) => {
+  cv.coord = cv.coord.clone({ scroll: pos })
+})
+cv.listenRequestRotateTo((angle) => {
+  cv.coord = cv.coord.clone({ angle })
+})
+cv.listenRequestUndo(() => {
+  cv.undo()
+})
+cv.listenRequestAnchorTransform(({ coord, target }) => {
+  if (target === 'root') cv.anchor = coord
+  if (target === 'child') cv.childAnchor = coord
+})
+cv.listenRequestAnchorReset(() => {
+  cv.anchor = new Coordinate()
+})
+
 })
 
 watch(() => [store.$state.penColor], () => {
