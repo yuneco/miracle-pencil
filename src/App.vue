@@ -1,18 +1,12 @@
 <script setup lang="ts">
-import "./defaultStyle.scss";
+import "./style/defaultStyle.scss";
 import PaintCanvas from "./components/PaintCanvas.vue";
 import Toolbar from "./components/Toolbar.vue";
-import ColorSelector from "./components/commonUis/ColorSelector.vue";
-import { useCanvasStore } from "./stores/CanvasStore";
-
-const store = useCanvasStore()
 </script>
 
 <template>
   <div class="toolbar">
-    <Toolbar>
-      <ColorSelector :value="store.$state.penColor" @input="v => store.setPenColor(v)" />
-    </Toolbar>
+    <Toolbar />
   </div>
   <div class="canvas">
     <PaintCanvas />

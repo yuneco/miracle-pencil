@@ -1,18 +1,25 @@
 <template>
-  <div class="ColorSelector" @click="open">
+  <label class="ColorSelector" @click="open">
+    <div
+      v-if="icon"
+      class="icon"
+      :style="{
+        backgroundImage: `url(${icon})`,
+      }"
+    ></div>
     <div
       class="view"
       :style="{
-        backgroundColor: value,
+        backgroundColor: modelValue,
       }"
     ></div>
     <input
       type="color"
       ref="inp"
-      :value="value"
+      :value="modelValue"
       @input="(ev) => changeColor(ev)"
     />
-  </div>
+  </label>
 </template>
 
 <script lang="ts" setup>
@@ -20,11 +27,12 @@ import { ref } from 'vue'
 const inp = ref<HTMLElement>()
 
 const props = defineProps<{
-  value: string
+  modelValue: string
+  icon?: string
 }>()
 
 const emit = defineEmits<{
-  (e: 'input', value: string): void
+  (e: 'update:modelValue', value: string): void
 }>()
 
 const open = () => {
@@ -32,33 +40,43 @@ const open = () => {
 }
 
 const changeColor = (ev: Event) => {
-  emit('input', (ev.target as HTMLInputElement).value)
+  emit('update:modelValue', (ev.target as HTMLInputElement).value)
 }
 </script>
 
 <style lang="scss" scoped>
 .ColorSelector {
   position: relative;
-  width: 32px;
   height: 32px;
   border: 1px solid #888;
-  border-radius: 50%;
-  overflow: hidden;
+  border-radius: 4px;
+  background-color: #fff;
+
+  .icon {
+    position: relative;
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    background-repeat: no-repeat;
+    background-position: left center;
+  }
   .view {
     position: absolute;
     width: 30px;
     height: 30px;
     top: 0;
-    left: 0;
+    right: 0px;
     border: 2px solid #fff;
-    border-radius: 50%;
+    border-radius: 4px;
+    z-index: 1;
   }
 
   input {
     position: relative;
-    top: 32px;
-    width: 1px;
-    height: 1px;
+    width: 30px;
+    height: 30px;
+    border-radius: 4px;
+    border: none;
   }
 }
 </style>

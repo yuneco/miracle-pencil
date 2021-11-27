@@ -5,7 +5,13 @@ html, body, #app {
   margin: 0;
   position: relative;
   height: 100%;
+  overflow: hidden;
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+:root {
+  --text-color: #3a3a3a;
+  --theme-color: rgb(147, 204, 214);
 }

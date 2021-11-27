@@ -2,16 +2,9 @@ import { defineStore } from 'pinia'
 
 export const useCanvasStore = defineStore('canvas', {
   state: () => ({
-    penColor: '#000000',
-    penCount: 12
+    penColor: '#3399aa',
+    penCount: [6, 0] as [number, number],
+    penWidth: 20,
+    isStraight: false,
   }),
-
-  actions: {
-    setPenColor(v: string) {
-      this.$state.penColor = v
-    },
-    setPenCount(v: number) {
-      this.$state.penCount = v
-    }
-  }
 })
