@@ -1,6 +1,38 @@
 <template>
   <div class="Toolbar">
-    <ColorSelector v-model="store.$state.penColor" />
+    <div class="radioGroup">
+      <ColorSelectItem
+        v-model="store.$state.penColor"
+        v-model:checked="isNotPenEraser"
+        edge="left"
+        icon="icons/icon-pen.svg"
+      />
+      <CheckItem
+        v-model="isPenEraser"
+        edge="right"
+        icon="icons/icon-eraser.svg"
+      />
+    </div>
+
+    <div class="radioGroup">
+      <SliderItem
+        v-model="store.penOpacity"
+        label="Opacity"
+        icon="icons/icon-opacity.svg"
+        :min="1"
+        :max="100"
+        edge="left"
+      />
+      <SliderItem
+        v-model="store.penWidth"
+        label="Width"
+        icon="icons/icon-width.svg"
+        :min="1"
+        :max="50"
+        edge="right"
+      />
+    </div>
+
     <div class="radioGroup">
       <CheckItem
         v-model="isPenStraight"
@@ -22,33 +54,21 @@
     />
 
     <div class="radioGroup">
-      <CheckItem
-        v-model="has2nd"
-        edge="left"
-        icon="icons/icon-2nd.svg"
+      <CheckItem v-model="has2nd" edge="left" icon="icons/icon-2nd.svg" />
+      <SliderItem
+        v-model="penCount2"
+        label="PenCount"
+        icon="icons/icon-count.svg"
+        :min="1"
+        :max="16"
+        edge="right"
       />
-    <SliderItem
-      v-model="penCount2"
-      label="PenCount"
-      icon="icons/icon-count.svg"
-      :min="1"
-      :max="16"
-      edge="right"
-    />
     </div>
-
-<SliderItem
-      v-model="store.penWidth"
-      label="Width"
-      icon="icons/icon-width.svg"
-      :min="1"
-      :max="50"
-    />
   </div>
 </template>
 
 <script lang="ts" setup>
-import ColorSelector from '@/components/commonUis/ColorSelector.vue'
+import ColorSelectItem from '@/components/commonUis/ColorSelectItem.vue'
 import SliderItem from '@/components/commonUis/SliderItem.vue'
 import CheckItem from '@/components/commonUis/CheckItem.vue'
 import { useCanvasStore } from '../stores/CanvasStore'
@@ -74,7 +94,6 @@ const has2nd = computed({
   get: () => penCount2.value >= 1,
 })
 
-
 const isPenStraight = computed({
   set: (v: boolean) => {
     store.isStraight = v
@@ -87,6 +106,20 @@ const isPenFreehand = computed({
     store.isStraight = !v
   },
   get: () => !store.isStraight,
+})
+
+const isPenEraser = computed({
+  set: (v: boolean) => {
+    store.isEraser = v
+  },
+  get: () => store.isEraser,
+})
+
+const isNotPenEraser = computed({
+  set: (v: boolean) => {
+    isPenEraser.value = !v
+  },
+  get: () => !isPenEraser.value,
 })
 </script>
 

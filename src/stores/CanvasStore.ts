@@ -7,5 +7,7 @@ export const useCanvasStore = defineStore('canvas', {
     isKaleido: [true, true] as [boolean, boolean],
     penWidth: 20,
     isStraight: false,
+    isEraser: false,
+    penOpacity: 100
   }),
 })

@@ -6,7 +6,8 @@
       :checked="modelValue"
       :edge="edge"
       @check="oncheck"
-    ></PaletteItem>
+      ><slot />
+    </PaletteItem>
   </div>
 </template>
 

@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive } from 'vue-demi'
+import { reactive, watch } from 'vue'
 import { constraint, stepValue } from '../../logics/utils/MathUtil'
 import PaletteItem from './PaletteItem.vue'
 import Slider from './Slider.vue'

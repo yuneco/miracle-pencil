@@ -1,12 +1,5 @@
 <template>
-  <label class="ColorSelector" @click="open">
-    <div
-      v-if="icon"
-      class="icon"
-      :style="{
-        backgroundImage: `url(${icon})`,
-      }"
-    ></div>
+  <div class="ColorSelector" @click="open">
     <div
       class="view"
       :style="{
@@ -19,7 +12,7 @@
       :value="modelValue"
       @input="(ev) => changeColor(ev)"
     />
-  </label>
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -28,7 +21,6 @@ const inp = ref<HTMLElement>()
 
 const props = defineProps<{
   modelValue: string
-  icon?: string
 }>()
 
 const emit = defineEmits<{
@@ -47,19 +39,7 @@ const changeColor = (ev: Event) => {
 <style lang="scss" scoped>
 .ColorSelector {
   position: relative;
-  height: 32px;
-  border: 1px solid #888;
-  border-radius: 4px;
-  background-color: #fff;
-
-  .icon {
-    position: relative;
-    display: inline-block;
-    width: 32px;
-    height: 32px;
-    background-repeat: no-repeat;
-    background-position: left center;
-  }
+  height: 30px;
   .view {
     position: absolute;
     width: 30px;

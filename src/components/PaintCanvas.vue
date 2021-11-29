@@ -21,6 +21,7 @@ onMounted(() => {
   cv.penWidth = store.penWidth
   cv.tool = store.isStraight ? 'draw:line' : 'draw'
   cv.isKaleido = store.isKaleido
+  cv.penKind = store.isEraser ? 'eraser' : 'normal'
 
   // iOSのスクロール無効化
   parent.addEventListener('touchmove', (event) => {
@@ -71,6 +72,15 @@ watch(() => [store.$state.isKaleido], () => {
   if(!canvas) return
   canvas.isKaleido = store.isKaleido
 })
+watch(() => [store.$state.isEraser], () => {
+  if(!canvas) return
+  canvas.penKind = store.isEraser ? 'eraser' : 'normal'
+})
+watch(() => [store.$state.penOpacity], () => {
+  if(!canvas) return
+  canvas.penAlpha = store.$state.penOpacity / 100
+})
+
 </script>
 
 <style lang="scss" scoped>
