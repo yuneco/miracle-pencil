@@ -79,13 +79,13 @@
 </template>
 
 <script lang="ts" setup>
-import ColorSelectItem from '@/components/commonUis/ColorSelectItem.vue'
-import SliderItem from '@/components/commonUis/SliderItem.vue'
-import SwitchItem from '@/components/commonUis/SwitchItem.vue'
-import CheckItem from '@/components/commonUis/CheckItem.vue'
+import ColorSelectItem from './items/color/ColorSelectItem.vue'
+import SliderItem from './items/slider/SliderItem.vue'
+import SwitchItem from './items/switch/SwitchItem.vue'
+import CheckItem from './items/CheckItem.vue'
 import { useCanvasStore } from '../../stores/CanvasStore'
 import { computed } from 'vue'
-import { SwitchOption } from '../commonUis/SwitchOption'
+import { SwitchOption } from './items/switch/SwitchOption'
 import * as ICONS from '../../assets/icons'
 
 const store = useCanvasStore()

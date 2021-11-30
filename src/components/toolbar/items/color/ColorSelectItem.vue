@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts" setup>
-import CheckItem from './CheckItem.vue'
+import CheckItem from '../CheckItem.vue'
 import ColorSelector from './ColorSelector.vue'
 import { computed } from 'vue-demi'
 const props = withDefaults(defineProps<{

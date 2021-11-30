@@ -6,7 +6,8 @@
         v-for="opt in options"
         :key="opt.key"
         class="opt"
-        :class="{ selected: opt.key === selected }"
+        :class="{ selected: opt.key === modelValue }"
+        @click="onselect(opt.key)"
       >
         <div
           v-if="opt.icon"
@@ -21,18 +22,30 @@
 </template>
 
 <script lang="ts" setup>
+import { sleep } from '../../../../logics/utils/sleep'
 import { SwitchOption } from './SwitchOption'
 
 const props = withDefaults(
   defineProps<{
     options?: SwitchOption[]
-    selected: SwitchOption['key']
+    modelValue: SwitchOption['key']
     label: string
   }>(),
   {
     options: () => [],
   }
 )
+
+const emit = defineEmits<{
+  (e: 'update:modelValue', value: SwitchOption['key']): void
+  (e: 'close'): void
+}>()
+
+const onselect = async (key: SwitchOption['key']) => {
+  emit('update:modelValue', key)
+  await sleep(200) // 選択項目がわかるよう、少し遅れてクローズする
+  emit('close')
+}
 </script>
 
 <style lang="scss" scoped>

@@ -1,35 +1,43 @@
 <template>
-  <div class="SwitchItem" @pointerdown.prevent="ondown">
+  <div class="SwitchItem">
     <PaletteItem
+      @pointerdown.prevent="ondown"
       :icon="selected?.icon"
       :edge="edge"
       :disabled="disabled"
     ></PaletteItem>
     <div class="list" v-show="state.isListVisible">
-      <SwitchList :label="label" :options="options" :selected="modelValue" />
+      <SwitchList
+        :label="label"
+        :options="options"
+        v-model="modelValue"
+        @close="closeList"
+      />
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { reactive, computed } from 'vue'
-import { constraint, stepValue } from '../../logics/utils/MathUtil'
-import PaletteItem from './PaletteItem.vue'
+import { reactive, computed, watch } from 'vue'
+import { constraint, stepValue } from '../../../../logics/utils/mathUtil'
+import PaletteItem from '../PaletteItem.vue'
 import SwitchList from './SwitchList.vue'
 import { SwitchOption } from './SwitchOption'
+import { startDragX } from '../startDrag'
+import { useToolbarStore } from '../../../../stores/ToolbarStore'
 
 const props = withDefaults(
   defineProps<{
     modelValue: SwitchOption['key']
     options?: SwitchOption[]
-    label?: string,
+    label?: string
     edge?: 'left' | 'right' | 'both' | 'none'
     disabled?: boolean
   }>(),
   {
     options: () => [],
     label: '',
-  disabled: false
+    disabled: false,
   }
 )
 
@@ -45,41 +53,65 @@ const emit = defineEmits<{
   (e: 'update:modelValue', val: SwitchOption['key']): void
 }>()
 
+const store = useToolbarStore()
+const id = `switch-${Math.random()}`
 const state = reactive({
-  startX: 0,
   startIndex: 0,
   isListVisible: false,
 })
 
 const ITEM_WIDTH = 120
 
-const ondown = (ev: PointerEvent) => {
-  if (props.disabled) return
-  state.startX = ev.screenX
+watch(
+  () => store.$state.activeItemId,
+  () => {
+    if (store.$state.activeItemId !== id) {
+      state.isListVisible = false
+    }
+  }
+)
+
+const closeList = () => {
+  if (store.$state.activeItemId === id) {
+    store.$state.activeItemId = ''
+  }
+}
+
+watch(
+  () => props.disabled,
+  () => {
+    if (props.disabled) closeList()
+  }
+)
+
+const openList = (ev: PointerEvent) => {
   state.startIndex = selectedIndex.value
   state.isListVisible = true
-  document.body.style.cursor = 'ew-resize'
-  const onmove = (ev: PointerEvent) => {
-    ev.preventDefault()
-    const dx = ev.screenX - state.startX
-    const unitX = ITEM_WIDTH
-    const v = constraint(
-      stepValue(state.startIndex + dx / unitX, 1, 0),
-      0,
-      props.options.length - 1
-    )
-    emit('update:modelValue', props.options[v].key)
+  store.$state.activeItemId = id
+  startDragX(
+    ev,
+    (dx: number) => {
+      const unitX = ITEM_WIDTH
+      const v = constraint(
+        stepValue(state.startIndex + dx / unitX, 1, 0),
+        0,
+        props.options.length - 1
+      )
+      emit('update:modelValue', props.options[v].key)
+    },
+    (isDragged: boolean) => {
+      if (isDragged) closeList()
+    }
+  )
+}
+
+const ondown = (ev: PointerEvent) => {
+  if (props.disabled) return
+  if (!state.isListVisible) {
+    openList(ev)
+  } else {
+    closeList()
   }
-  const cancelEvents = () => {
-    state.isListVisible = false
-    document.body.removeEventListener('pointermove', onmove)
-    document.body.removeEventListener('pointerup', cancelEvents)
-    document.body.removeEventListener('pointercancel', cancelEvents)
-    document.body.style.cursor = ''
-  }
-  document.body.addEventListener('pointermove', onmove)
-  document.body.addEventListener('pointerup', cancelEvents)
-  document.body.addEventListener('pointercancel', cancelEvents)
 }
 </script>
 
