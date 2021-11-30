@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import "./style/defaultStyle.scss";
 import PaintCanvas from "./components/PaintCanvas.vue";
-import Toolbar from "./components/Toolbar.vue";
+import Toolbar from "./components/toolbar/Toolbar.vue";
 </script>
 
 <template>

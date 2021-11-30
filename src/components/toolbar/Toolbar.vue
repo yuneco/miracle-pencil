@@ -5,12 +5,12 @@
         v-model="store.$state.penColor"
         v-model:checked="isNotPenEraser"
         edge="left"
-        icon="icons/icon-pen.svg"
+        :icon="ICONS.ICON_PEN"
       />
       <CheckItem
         v-model="isPenEraser"
         edge="right"
-        icon="icons/icon-eraser.svg"
+        :icon="ICONS.ICON_ERASER"
       />
     </div>
 
@@ -18,7 +18,7 @@
       <SliderItem
         v-model="store.penOpacity"
         label="Opacity"
-        icon="icons/icon-opacity.svg"
+        :icon="ICONS.ICON_OPACITY"
         :min="1"
         :max="100"
         edge="left"
@@ -26,7 +26,7 @@
       <SliderItem
         v-model="store.penWidth"
         label="Width"
-        icon="icons/icon-width.svg"
+        :icon="ICONS.ICON_WIDTH"
         :min="1"
         :max="50"
         edge="none"
@@ -43,7 +43,7 @@
       <SliderItem
         v-model="penCount1"
         label="PenCount"
-        icon="icons/icon-count.svg"
+        :icon="ICONS.ICON_COUNT"
         :min="1"
         :max="16"
         edge="left"
@@ -57,11 +57,11 @@
     </div>
 
     <div class="radioGroup">
-      <CheckItem v-model="has2nd" edge="left" icon="icons/icon-2nd.svg" />
+      <CheckItem v-model="has2nd" edge="left" :icon="ICONS.ICON_2ND" />
       <SliderItem
         v-model="penCount2"
         label="PenCount"
-        icon="icons/icon-count.svg"
+        :icon="ICONS.ICON_COUNT"
         :min="1"
         :max="16"
         edge="none"
@@ -83,9 +83,10 @@ import ColorSelectItem from '@/components/commonUis/ColorSelectItem.vue'
 import SliderItem from '@/components/commonUis/SliderItem.vue'
 import SwitchItem from '@/components/commonUis/SwitchItem.vue'
 import CheckItem from '@/components/commonUis/CheckItem.vue'
-import { useCanvasStore } from '../stores/CanvasStore'
+import { useCanvasStore } from '../../stores/CanvasStore'
 import { computed } from 'vue'
-import { SwitchOption } from './commonUis/SwitchOption'
+import { SwitchOption } from '../commonUis/SwitchOption'
+import * as ICONS from '../../assets/icons'
 
 const store = useCanvasStore()
 const penCount1 = computed({
@@ -108,8 +109,8 @@ const has2nd = computed({
 })
 
 const penStraightOpts: SwitchOption[] = [
-  { key: 'line', label: 'line', icon: 'icons/icon-line.svg' },
-  { key: 'free', label: 'free', icon: 'icons/icon-freehand.svg' },
+  { key: 'line', label: 'line', icon: ICONS.ICON_LINE },
+  { key: 'free', label: 'free', icon: ICONS.ICON_FREEHAND },
 ]
 
 const penStraightType = computed<'line' | 'free'>({
@@ -135,8 +136,8 @@ const isNotPenEraser = computed({
 })
 
 const penKaleidoOpts: SwitchOption[] = [
-  { key: 'mirror', label: 'mirror', icon: 'icons/icon-mode-mirror.svg' },
-  { key: 'kaleido', label: 'kaleido', icon: 'icons/icon-mode-kaleido.svg' },
+  { key: 'mirror', label: 'mirror', icon: ICONS.ICON_MODE_MIRROR },
+  { key: 'kaleido', label: 'kaleido', icon: ICONS.ICON_MODE_KALEIDO },
 ]
 const pen1Kaleido = computed<'mirror' | 'kaleido'>({
   set: (v: string) => {
