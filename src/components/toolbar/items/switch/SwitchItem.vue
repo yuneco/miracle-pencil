@@ -10,7 +10,8 @@
       <SwitchList
         :label="label"
         :options="options"
-        v-model="modelValue"
+        :modelValue="modelValue"
+        @update:modelValue="changeList"
         @close="closeList"
       />
     </div>
@@ -112,6 +113,10 @@ const ondown = (ev: PointerEvent) => {
   } else {
     closeList()
   }
+}
+
+const changeList = (v: SwitchOption['key']) => {
+  emit('update:modelValue', v)
 }
 </script>
 

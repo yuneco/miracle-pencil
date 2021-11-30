@@ -9,7 +9,8 @@
     ></PaletteItem>
     <div class="slider" v-if="state.isSliderVisible">
       <Slider
-        v-model="modelValue"
+        :modelValue="modelValue"
+        @update:model-value="changeValue"
         :label="label"
         :min="min"
         :max="max"
@@ -112,6 +113,10 @@ const ondown = (ev: PointerEvent) => {
   } else {
     closeSlider()
   }
+}
+
+const changeValue = (v: number) => {
+  emit('update:modelValue', v)
 }
 </script>
 
