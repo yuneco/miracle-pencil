@@ -1,76 +1,77 @@
 <template>
-  <div class="SliderItem" @pointerdown.prevent="ondown">
+  <div class="SwitchItem" @pointerdown.prevent="ondown">
     <PaletteItem
-      :label="`${modelValue}${unit}`"
-      :icon="icon"
+      :icon="selected?.icon"
       :edge="edge"
       :disabled="disabled"
     ></PaletteItem>
-    <div class="slider" v-show="state.isSliderVisible">
-      <Slider :value="modelValue" :label="label" :min="min" :max="max" />
+    <div class="list" v-show="state.isListVisible">
+      <SwitchList :label="label" :options="options" :selected="modelValue" />
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { reactive, watch } from 'vue'
+import { reactive, computed } from 'vue'
 import { constraint, stepValue } from '../../logics/utils/MathUtil'
 import PaletteItem from './PaletteItem.vue'
-import Slider from './Slider.vue'
+import SwitchList from './SwitchList.vue'
+import { SwitchOption } from './SwitchOption'
 
 const props = withDefaults(
   defineProps<{
-    min?: number
-    max?: number
-    modelValue: number
-    step?: number
-    label?: string
-    unit?: string
-    icon?: string
+    modelValue: SwitchOption['key']
+    options?: SwitchOption[]
+    label?: string,
     edge?: 'left' | 'right' | 'both' | 'none'
     disabled?: boolean
   }>(),
   {
-    min: 0,
-    max: 100,
-    step: 1,
+    options: () => [],
     label: '',
-    unit: '',
-    disabled: false,
+  disabled: false
   }
 )
 
+const selected = computed(() =>
+  props.options.find((item) => item.key === props.modelValue)
+)
+
+const selectedIndex = computed(() =>
+  props.options.findIndex((item) => item.key === props.modelValue)
+)
+
 const emit = defineEmits<{
-  (e: 'update:modelValue', val: number): void
+  (e: 'update:modelValue', val: SwitchOption['key']): void
 }>()
 
 const state = reactive({
   startX: 0,
-  startValue: 0,
-  isSliderVisible: false,
+  startIndex: 0,
+  isListVisible: false,
 })
 
-const SLIDER_WIDTH = 120
+const ITEM_WIDTH = 120
 
 const ondown = (ev: PointerEvent) => {
   if (props.disabled) return
   state.startX = ev.screenX
-  state.startValue = props.modelValue
-  state.isSliderVisible = true
+  state.startIndex = selectedIndex.value
+  state.isListVisible = true
   document.body.style.cursor = 'ew-resize'
   const onmove = (ev: PointerEvent) => {
     ev.preventDefault()
     const dx = ev.screenX - state.startX
-    const unitX = SLIDER_WIDTH / (props.max - props.min)
+    const unitX = ITEM_WIDTH
     const v = constraint(
-      stepValue(state.startValue + dx / unitX, props.step, props.min),
-      props.min,
-      props.max
+      stepValue(state.startIndex + dx / unitX, 1, 0),
+      0,
+      props.options.length - 1
     )
-    emit('update:modelValue', v)
+    emit('update:modelValue', props.options[v].key)
   }
   const cancelEvents = () => {
-    state.isSliderVisible = false
+    state.isListVisible = false
     document.body.removeEventListener('pointermove', onmove)
     document.body.removeEventListener('pointerup', cancelEvents)
     document.body.removeEventListener('pointercancel', cancelEvents)
@@ -83,13 +84,13 @@ const ondown = (ev: PointerEvent) => {
 </script>
 
 <style lang="scss" scoped>
-.SliderItem {
+.SwitchItem {
   position: relative;
   cursor: ew-resize;
-  .slider {
+  .list {
     position: absolute;
     top: 38px;
-    left: 24px;
+    left: 8px;
     filter: drop-shadow(0 0 8px #00000066);
     padding: 4px;
     background-color: #fff;

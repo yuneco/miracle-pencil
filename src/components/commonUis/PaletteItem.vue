@@ -3,6 +3,7 @@
     backgroundColor: checked ? '#ddd' : '#fff',
     ...borderStyle
   }"
+  :class="{PaletteItem__disabled: disabled}"
   @click="check"
   >
       <span
@@ -25,10 +26,12 @@ const props = withDefaults(
     label?: string
     checked?: boolean
     edge?: 'left' | 'right' | 'both' | 'none'
+    disabled?: boolean
   }>(),
   { 
     checked: false,
-    edge: 'both'
+    edge: 'both',
+    disabled: false
    }
 )
 
@@ -52,6 +55,7 @@ const borderStyle = computed(() => {
     borderRightWidth: (props.edge === 'right' || props.edge === 'both') ? '1px' : '0'
   }
 })
+
 </script>
 
 <style lang="scss" scoped>
@@ -59,11 +63,15 @@ const borderStyle = computed(() => {
   display: inline-flex;
   position: relative;
   height: 32px;
-  border: 1px solid gray;
+  border: 1px solid #aaa;
   background-color: #fff;
   padding: 0 4px;
   cursor: inherit;
   margin: 0;
+  &__disabled {
+    opacity: 0.3;
+    pointer-events: none;
+  }
 
   .content {
     display: inline-block;
