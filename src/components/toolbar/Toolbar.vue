@@ -75,6 +75,10 @@
         :disabled="!has2nd"
       />
     </div>
+    <PaletteItem
+      icon="export"
+      @check="openExport"    
+    />
   </div>
 </template>
 
@@ -83,11 +87,15 @@ import ColorSelectItem from './items/color/ColorSelectItem.vue'
 import SliderItem from './items/slider/SliderItem.vue'
 import SwitchItem from './items/switch/SwitchItem.vue'
 import CheckItem from './items/CheckItem.vue'
+import PaletteItem from './items/PaletteItem.vue'
 import { useCanvasStore } from '../../stores/CanvasStore'
 import { computed } from 'vue'
 import { SwitchOption } from './items/switch/SwitchOption'
+import { useAppStore } from '../../stores/AppStore'
 
 const store = useCanvasStore()
+const appStore = useAppStore()
+
 const penCount1 = computed({
   set: (v: number) => {
     store.penCount = [v, store.penCount[1]]
@@ -150,6 +158,11 @@ const pen2Kaleido = computed<'mirror' | 'kaleido'>({
   },
   get: () => (store.isKaleido[1] ? 'kaleido' : 'mirror'),
 })
+
+const openExport = () => {
+  if (appStore.$state.modal) return
+  appStore.$state.modal = 'export'
+}
 </script>
 
 <style lang="scss" scoped>

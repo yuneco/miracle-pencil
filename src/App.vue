@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import "./style/defaultStyle.scss";
-import PaintCanvas from "./components/PaintCanvas.vue";
-import Toolbar from "./components/toolbar/Toolbar.vue";
+import './style/defaultStyle.scss'
+import PaintCanvas from './components/PaintCanvas.vue'
+import Toolbar from './components/toolbar/Toolbar.vue'
+import Modals from './components/modals/Modals.vue';
 </script>
 
 <template>
@@ -10,6 +11,9 @@ import Toolbar from "./components/toolbar/Toolbar.vue";
   </div>
   <div class="canvas">
     <PaintCanvas />
+  </div>
+  <div class="moldals">
+    <Modals />
   </div>
 </template>
 

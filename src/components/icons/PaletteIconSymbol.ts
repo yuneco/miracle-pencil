@@ -9,3 +9,5 @@ export type PaletteIconSymbol =
   | 'opacity'
   | 'pen'
   | 'width'
+  | 'export'
+  | 'other'
