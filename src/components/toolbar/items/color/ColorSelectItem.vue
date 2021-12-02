@@ -10,10 +10,11 @@
 import CheckItem from '../CheckItem.vue'
 import ColorSelector from './ColorSelector.vue'
 import { computed } from 'vue-demi'
+import { PaletteIconSymbol } from '../../../icons/PaletteIconSymbol'
 const props = withDefaults(defineProps<{
   modelValue: string
   checked?: boolean
-  icon?: string
+  icon?: PaletteIconSymbol
   edge?: 'left' | 'right' | 'both' | 'none'
 }>(),{
   checked: false

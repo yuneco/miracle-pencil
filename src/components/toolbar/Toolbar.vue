@@ -5,12 +5,12 @@
         v-model="store.$state.penColor"
         v-model:checked="isNotPenEraser"
         edge="left"
-        :icon="ICONS.ICON_PEN"
+        icon="pen"
       />
       <CheckItem
         v-model="isPenEraser"
         edge="right"
-        :icon="ICONS.ICON_ERASER"
+        icon="eraser"
       />
     </div>
 
@@ -18,7 +18,7 @@
       <SliderItem
         v-model="store.penOpacity"
         label="Opacity"
-        :icon="ICONS.ICON_OPACITY"
+        icon="opacity"
         :min="1"
         :max="100"
         edge="left"
@@ -26,7 +26,7 @@
       <SliderItem
         v-model="store.penWidth"
         label="Width"
-        :icon="ICONS.ICON_WIDTH"
+        icon="width"
         :min="1"
         :max="50"
         edge="none"
@@ -43,7 +43,7 @@
       <SliderItem
         v-model="penCount1"
         label="PenCount"
-        :icon="ICONS.ICON_COUNT"
+        icon="count"
         :min="1"
         :max="16"
         edge="left"
@@ -57,11 +57,11 @@
     </div>
 
     <div class="radioGroup">
-      <CheckItem v-model="has2nd" edge="left" :icon="ICONS.ICON_2ND" />
+      <CheckItem v-model="has2nd" edge="left" icon="2nd" />
       <SliderItem
         v-model="penCount2"
         label="PenCount"
-        :icon="ICONS.ICON_COUNT"
+        icon="count"
         :min="1"
         :max="16"
         edge="none"
@@ -86,7 +86,6 @@ import CheckItem from './items/CheckItem.vue'
 import { useCanvasStore } from '../../stores/CanvasStore'
 import { computed } from 'vue'
 import { SwitchOption } from './items/switch/SwitchOption'
-import * as ICONS from '../../assets/icons'
 
 const store = useCanvasStore()
 const penCount1 = computed({
@@ -109,8 +108,8 @@ const has2nd = computed({
 })
 
 const penStraightOpts: SwitchOption[] = [
-  { key: 'line', label: 'line', icon: ICONS.ICON_LINE },
-  { key: 'free', label: 'free', icon: ICONS.ICON_FREEHAND },
+  { key: 'line', label: 'line', icon: 'line' },
+  { key: 'free', label: 'free', icon: 'freehand' },
 ]
 
 const penStraightType = computed<'line' | 'free'>({
@@ -136,8 +135,8 @@ const isNotPenEraser = computed({
 })
 
 const penKaleidoOpts: SwitchOption[] = [
-  { key: 'mirror', label: 'mirror', icon: ICONS.ICON_MODE_MIRROR },
-  { key: 'kaleido', label: 'kaleido', icon: ICONS.ICON_MODE_KALEIDO },
+  { key: 'mirror', label: 'mirror', icon: 'mode_mirror' },
+  { key: 'kaleido', label: 'kaleido', icon: 'mode_kaleido' },
 ]
 const pen1Kaleido = computed<'mirror' | 'kaleido'>({
   set: (v: string) => {

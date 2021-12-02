@@ -12,12 +12,13 @@
 </template>
 
 <script lang="ts" setup>
+import { PaletteIconSymbol } from '../../icons/PaletteIconSymbol'
 import PaletteItem from './PaletteItem.vue'
 const props = withDefaults(
   defineProps<{
     modelValue: boolean
     label?: string
-    icon?: string
+    icon?: PaletteIconSymbol
     edge?: 'left' | 'right' | 'both' | 'none'
   }>(),
   {

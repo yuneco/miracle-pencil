@@ -1,0 +1,11 @@
+export type PaletteIconSymbol =
+  | '2nd'
+  | 'count'
+  | 'eraser'
+  | 'freehand'
+  | 'line'
+  | 'mode_kaleido'
+  | 'mode_mirror'
+  | 'opacity'
+  | 'pen'
+  | 'width'

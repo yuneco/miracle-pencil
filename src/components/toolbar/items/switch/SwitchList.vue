@@ -9,13 +9,9 @@
         :class="{ selected: opt.key === modelValue }"
         @click="onselect(opt.key)"
       >
-        <div
-          v-if="opt.icon"
-          class="icon"
-          :style="{
-            backgroundImage: `url(${opt.icon})`,
-          }"
-        />
+        <div v-if="opt.icon" class="icon">
+          <PaletteIcon :symbol="opt.icon" />
+        </div>
       </li>
     </ul>
   </div>
@@ -24,6 +20,7 @@
 <script lang="ts" setup>
 import { sleep } from '../../../../logics/utils/sleep'
 import { SwitchOption } from './SwitchOption'
+import PaletteIcon from '../../../icons/PaletteIcon.vue'
 
 const props = withDefaults(
   defineProps<{

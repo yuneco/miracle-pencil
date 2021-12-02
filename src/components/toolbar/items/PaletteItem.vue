@@ -9,20 +9,21 @@
       <span
         class="icon"
         v-if="icon"
-        :style="{
-          backgroundImage: `url(${icon})`,
-        }"
-      />
+      >
+        <PaletteIcon :symbol="icon" />
+      </span>
       <div class="content"><slot /></div>
       <span class="label" v-if="label">{{ label }}</span>
   </button>
 </template>
 
 <script lang="ts" setup>import { computed } from 'vue-demi'
+import PaletteIcon from '../../icons/PaletteIcon.vue'
+import { PaletteIconSymbol } from '../../icons/PaletteIconSymbol'
 
 const props = withDefaults(
   defineProps<{
-    icon?: string
+    icon?: PaletteIconSymbol
     label?: string
     checked?: boolean
     edge?: 'left' | 'right' | 'both' | 'none'

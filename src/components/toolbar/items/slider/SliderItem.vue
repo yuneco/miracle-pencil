@@ -27,6 +27,7 @@ import PaletteItem from '../PaletteItem.vue'
 import Slider from './Slider.vue'
 import { startDragX } from '../startDrag'
 import { useToolbarStore } from '../../../../stores/ToolbarStore'
+import { PaletteIconSymbol } from '../../../icons/PaletteIconSymbol'
 
 const props = withDefaults(
   defineProps<{
@@ -36,7 +37,7 @@ const props = withDefaults(
     step?: number
     label?: string
     unit?: string
-    icon?: string
+    icon?: PaletteIconSymbol
     edge?: 'left' | 'right' | 'both' | 'none'
     disabled?: boolean
   }>(),
