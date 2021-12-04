@@ -1,10 +1,12 @@
 <template>
   <div class="ExportDialog">
     <PlaneBox>
-      <CloseButton @click="emit('close')" />
-      Export Dialog
-      <button @click="copy">Copy</button>
-      <button @click="share" v-if="isShowShare">Share</button>
+      <div class="close">
+        <CloseButton @click="emit('close')" />
+      </div>
+      <div class="title">
+        Export Image
+      </div>
       <div class="images">
         <div class="image">
           <img
@@ -27,6 +29,10 @@
           />
         </div>
       </div>
+      <div class="buttons">
+        <PureButton @click="copy" :disabled="!state.selected">Copy</PureButton>
+        <PureButton @click="share" v-if="isShowShare">Share</PureButton>
+      </div>
     </PlaneBox>
   </div>
 </template>
@@ -41,6 +47,7 @@ import { blobToImg } from '../../logics/graphics/blobToImg'
 import { cropImg } from '../../logics/graphics/cropImg'
 import { imgToBlob } from '../../logics/graphics/imgToBlob'
 import { shareImage } from '../../logics/graphics/shareImg'
+import PureButton from '../common/PureButton.vue'
 
 const IMG_BOX_SIZE = 300
 type State = {
@@ -123,21 +130,42 @@ loadImg()
 </script>
 
 <style lang="scss" scoped>
-.images {
-  display: flex;
-  gap: 4px;
-  .image {
-    width: 300px;
-    height: 300px;
+.ExportDialog {
+  .title {
+    font-weight: bold;
+    color: #444;
+    padding-bottom: 16px;
+  }
+  .close {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+  }
+  .images {
+    display: flex;
+    gap: 6px;
+    .image {
+      width: 300px;
+      height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      img {
+        border: 2px solid #ddd;
+        box-shadow: 0 0 8px #00000011;
+        &.selected {
+          border: 2px solid var(--theme-color);
+        }
+      }
+    }
+  }
+
+  .buttons {
     display: flex;
     align-items: center;
     justify-content: center;
-    img {
-      outline: 1px solid #aaa;
-      &.selected {
-        outline: 2px solid var(--theme-color);
-      }
-    }
+    gap: 4px;
+    padding-top: 20px;
   }
 }
 </style>

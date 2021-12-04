@@ -52,12 +52,12 @@ const hasContent = computed(() => {
   }
 
   &.fade-enter-active {
-    transition: 0.5s;
+    transition: 0.35s;
     .bg {
-      transition: opacity 0.5s;
+      transition: opacity 0.35s;
     }
     .content {
-      transition: transform 0.5s, opacity 0.5s;
+      transition: transform cubic-bezier(.08,.76,.57,1.26) 0.35s, opacity 0.35s;
     }
   }
   &.fade-leave-active {
@@ -76,7 +76,7 @@ const hasContent = computed(() => {
     }
     .content {
       opacity: 0.5;
-      transform: translateY(100px);
+      transform: translateY(100px) scale(0.7);
     }
   }
   &.fade-leave-to {

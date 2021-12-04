@@ -13,5 +13,6 @@
   background-color: #fff;
   border-radius: 8px;
   padding: 24px;
+  filter: drop-shadow(0 0 24px #00000066);
 }
 </style>
