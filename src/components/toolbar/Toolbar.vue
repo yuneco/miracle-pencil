@@ -3,12 +3,14 @@
     <div class="radioGroup">
       <ColorSelectItem
         v-model="store.$state.penColor"
-        v-model:checked="isNotPenEraser"
+        :checked="!store.isEraser"
+        @update:checked="(v) => v && selectPen()"
         edge="left"
         icon="pen"
       />
       <CheckItem
-        v-model="isPenEraser"
+        :modelValue="store.isEraser"
+        @update:modelValue="(v) => v && selectEraser()"
         edge="right"
         icon="eraser"
       />
@@ -75,10 +77,7 @@
         :disabled="!has2nd"
       />
     </div>
-    <PaletteItem
-      icon="export"
-      @check="openExport"    
-    />
+    <PaletteItem icon="export" @check="openExport" />
   </div>
 </template>
 
@@ -124,23 +123,15 @@ const penStraightType = computed<'line' | 'free'>({
   set: (v: string) => {
     store.isStraight = v === 'line'
   },
-  get: () => store.isStraight ? 'line' : 'free',
+  get: () => (store.isStraight ? 'line' : 'free'),
 })
 
-
-const isPenEraser = computed({
-  set: (v: boolean) => {
-    store.isEraser = v
-  },
-  get: () => store.isEraser,
-})
-
-const isNotPenEraser = computed({
-  set: (v: boolean) => {
-    isPenEraser.value = !v
-  },
-  get: () => !isPenEraser.value,
-})
+const selectPen = () => {
+  store.isEraser = false
+}
+const selectEraser = () => {
+  store.isEraser = true
+}
 
 const penKaleidoOpts: SwitchOption[] = [
   { key: 'mirror', label: 'mirror', icon: 'mode_mirror' },
@@ -170,6 +161,7 @@ const openExport = () => {
   width: 100%;
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
   position: absolute;
   top: 8px;
   left: 0;
