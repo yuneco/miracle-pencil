@@ -4,6 +4,7 @@
       <CloseButton @click="emit('close')" />
       Export Dialog
       <button @click="copy">Copy</button>
+      <button @click="share" v-if="isShowShare">Share</button>
       <div class="images">
         <div class="image">
           <img
@@ -39,6 +40,7 @@ import { computed, reactive, ref } from 'vue-demi'
 import { blobToImg } from '../../logics/graphics/blobToImg'
 import { cropImg } from '../../logics/graphics/cropImg'
 import { imgToBlob } from '../../logics/graphics/imgToBlob'
+import { shareImage } from '../../logics/graphics/shareImg'
 
 const IMG_BOX_SIZE = 300
 type State = {
@@ -64,6 +66,7 @@ const state = reactive<State>({
 
 const imgRef = ref<HTMLImageElement>()
 const croppedImgRef = ref<HTMLImageElement>()
+const isShowShare = !!navigator.share
 
 const imgStyle = computed(() => {
   const scale =
@@ -84,11 +87,22 @@ const croppedImgStyle = computed(() => {
   }
 })
 
-const copy = async () => {
+const selectedImg = computed(() => {
   if (!state.selected) return
-  const img = state.selected === 'img' ? imgRef.value : croppedImgRef.value
-  const copied = img && await copyImgToClipboard(img)
+  return state.selected === 'img' ? imgRef.value : croppedImgRef.value
+})
+
+const copy = async () => {
+  if (!selectedImg.value) return
+  const copied = await copyImgToClipboard(selectedImg.value)
   alert(copied ? 'copied!' : 'failed to copy img')
+}
+
+const share = async () => {
+  if (!selectedImg.value) return
+  const blob = await imgToBlob(selectedImg.value)
+  if (!blob) return
+  await shareImage(blob)
 }
 
 const loadImg = async () => {
