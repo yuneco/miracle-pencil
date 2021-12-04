@@ -1,4 +1,6 @@
-export const copyImgToClipboard = async (imgPromise: Promise<Blob>) => {
+import { imgToBlob } from "./imgToBlob"
+
+export const copyBlobImgToClipboard = async (imgPromise: Promise<Blob>) => {
   // see: https://stackoverflow.com/questions/61187374/how-to-fix-the-cannot-find-name-clipboarditem-error
   let item: ClipboardItem | undefined
   try {
@@ -13,4 +15,22 @@ export const copyImgToClipboard = async (imgPromise: Promise<Blob>) => {
     })
   }
   await navigator.clipboard.write([item])
+  return true
+}
+
+export const copyImgToClipboard = async (img: HTMLImageElement) => {
+  const promise = imgToBlob(img)
+  if (!promise) {
+    return false
+  }
+  const isCopied = await copyBlobImgToClipboard(promise.then(blob => {
+    if (!blob) {
+      throw new Error('failed to copy img')
+    }
+    return blob
+  })).catch(err => {
+    console.warn(err)
+    return false
+  })
+  return isCopied
 }

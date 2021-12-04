@@ -4,8 +4,27 @@
       <CloseButton @click="emit('close')" />
       Export Dialog
       <button @click="copy">Copy</button>
-      <div class="image">
-        <img v-if="state.imgSrc" :src="state.imgSrc" :style="imgStyle" />
+      <div class="images">
+        <div class="image">
+          <img
+            v-if="state.imgSrc"
+            :src="state.imgSrc"
+            :style="imgStyle"
+            :class="{ selected: state.selected === 'img' }"
+            ref="imgRef"
+            @click="state.selected = 'img'"
+          />
+        </div>
+        <div class="image">
+          <img
+            v-if="state.croppedImgSrc"
+            :src="state.croppedImgSrc"
+            :style="croppedImgStyle"
+            :class="{ selected: state.selected === 'croppedImg' }"
+            ref="croppedImgRef"
+            @click="state.selected = 'croppedImg'"
+          />
+        </div>
       </div>
     </PlaneBox>
   </div>
@@ -18,11 +37,16 @@ import { useSymPaint } from '../../logics/canvas/useSymPaint'
 import { copyImgToClipboard } from '../../logics/graphics/copyToClipboard'
 import { computed, reactive, ref } from 'vue-demi'
 import { blobToImg } from '../../logics/graphics/blobToImg'
+import { cropImg } from '../../logics/graphics/cropImg'
+import { imgToBlob } from '../../logics/graphics/imgToBlob'
 
 const IMG_BOX_SIZE = 300
 type State = {
   imgSrc: string
   imgSize: { w: number; h: number }
+  croppedImgSrc: string
+  croppedImgSize: { w: number; h: number }
+  selected: 'img' | 'croppedImg' | undefined
 }
 
 const emit = defineEmits<{
@@ -33,7 +57,13 @@ const { toImgBlob } = useSymPaint()
 const state = reactive<State>({
   imgSrc: '',
   imgSize: { w: 0, h: 0 },
+  croppedImgSrc: '',
+  croppedImgSize: { w: 0, h: 0 },
+  selected: undefined,
 })
+
+const imgRef = ref<HTMLImageElement>()
+const croppedImgRef = ref<HTMLImageElement>()
 
 const imgStyle = computed(() => {
   const scale =
@@ -44,38 +74,56 @@ const imgStyle = computed(() => {
   }
 })
 
-const copy = async () => {
-  const promise = toImgBlob()
-  if (!promise) {
-    alert('failed to copy img')
-    return
+const croppedImgStyle = computed(() => {
+  const scale =
+    IMG_BOX_SIZE /
+    Math.max(state.croppedImgSize.w, state.croppedImgSize.h, IMG_BOX_SIZE)
+  return {
+    width: `${state.croppedImgSize.w * scale}px`,
+    height: `${state.croppedImgSize.h * scale}px`,
   }
-  await copyImgToClipboard(promise)
-  alert('copied!')
+})
+
+const copy = async () => {
+  if (!state.selected) return
+  const img = state.selected === 'img' ? imgRef.value : croppedImgRef.value
+  const copied = img && await copyImgToClipboard(img)
+  alert(copied ? 'copied!' : 'failed to copy img')
 }
 
 const loadImg = async () => {
   const blob = await toImgBlob()
   if (!blob) return
-  const img = blobToImg(blob)
-  img.onload = () => {
-    state.imgSize.w = img.naturalWidth
-    state.imgSize.h = img.naturalHeight
-    state.imgSrc = img.src
-  }
+  const img = await blobToImg(blob)
+  state.imgSize.w = img.naturalWidth
+  state.imgSize.h = img.naturalHeight
+  state.imgSrc = img.src
+  state.selected = 'img'
+  const cropped = await cropImg(img)
+  if (!cropped) return
+  state.croppedImgSize.w = cropped.naturalWidth
+  state.croppedImgSize.h = cropped.naturalHeight
+  state.croppedImgSrc = cropped.src
 }
 loadImg()
 </script>
 
 <style lang="scss" scoped>
-.image {
-  width: 300px;
-  height: 300px;
+.images {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  img {
-    border: 1px solid gray;
+  gap: 4px;
+  .image {
+    width: 300px;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    img {
+      outline: 1px solid #aaa;
+      &.selected {
+        outline: 2px solid var(--theme-color);
+      }
+    }
   }
 }
 </style>
