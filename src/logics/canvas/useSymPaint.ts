@@ -3,6 +3,16 @@ import { computed, ref, watch } from 'vue-demi'
 import { useCanvasStore } from '../../stores/CanvasStore'
 
 const canvas = ref<PaintCanvas | undefined>()
+
+const initKeyboardShortcuts = () => {
+  window.addEventListener('keydown', (ev) => {
+    if (ev.key === 'z' && ev.metaKey) {
+      canvas.value?.undo()
+    }
+  })  
+}
+initKeyboardShortcuts()
+
 const init = (
   parent: HTMLElement,
   store: ReturnType<typeof useCanvasStore>
