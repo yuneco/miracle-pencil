@@ -3,6 +3,7 @@ import './style/defaultStyle.scss'
 import PaintCanvas from './components/PaintCanvas.vue'
 import Toolbar from './components/toolbar/Toolbar.vue'
 import Modals from './components/modals/Modals.vue';
+import Toast from './components/common/Toast.vue';
 </script>
 
 <template>
@@ -14,6 +15,9 @@ import Modals from './components/modals/Modals.vue';
   </div>
   <div class="moldals">
     <Modals />
+  </div>
+  <div class="toast">
+    <Toast />
   </div>
 </template>
 

@@ -48,8 +48,10 @@ import { cropImg } from '../../logics/graphics/cropImg'
 import { imgToBlob } from '../../logics/graphics/imgToBlob'
 import { shareImage } from '../../logics/graphics/shareImg'
 import PureButton from '../common/PureButton.vue'
+import { useAppStore } from '../../stores/AppStore'
 
-const IMG_BOX_SIZE = 300
+const IMG_BOX_SIZE = 240
+const appStore = useAppStore()
 type State = {
   imgSrc: string
   imgSize: { w: number; h: number }
@@ -102,7 +104,7 @@ const selectedImg = computed(() => {
 const copy = async () => {
   if (!selectedImg.value) return
   const copied = await copyImgToClipboard(selectedImg.value)
-  alert(copied ? 'copied!' : 'failed to copy img')
+  appStore.$state.toast = copied ? 'copied!' : 'failed to copy img'
 }
 
 const share = async () => {
@@ -131,6 +133,7 @@ loadImg()
 
 <style lang="scss" scoped>
 .ExportDialog {
+  max-width: 90vw;
   .title {
     font-weight: bold;
     color: #444;
@@ -144,9 +147,11 @@ loadImg()
   .images {
     display: flex;
     gap: 6px;
+    width: 100%;
+    overflow-x: scroll;
     .image {
-      width: 300px;
-      height: 300px;
+      width: 240px;
+      height: 240px;
       display: flex;
       align-items: center;
       justify-content: center;
