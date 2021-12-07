@@ -46,8 +46,8 @@
         v-model="penCount1"
         label="PenCount"
         icon="count"
-        :min="1"
-        :max="16"
+        :min="PEN_COUNT_RANGE_1.min"
+        :max="PEN_COUNT_RANGE_1.max"
         edge="left"
       />
       <SwitchItem
@@ -64,8 +64,8 @@
         v-model="penCount2"
         label="PenCount"
         icon="count"
-        :min="1"
-        :max="16"
+        :min="PEN_COUNT_RANGE_2.min"
+        :max="PEN_COUNT_RANGE_2.max"
         edge="none"
         :disabled="!has2nd"
       />
@@ -91,6 +91,7 @@ import { useCanvasStore } from '../../stores/CanvasStore'
 import { computed } from 'vue'
 import { SwitchOption } from './items/switch/SwitchOption'
 import { useAppStore } from '../../stores/AppStore'
+import { PEN_COUNT_RANGE_1, PEN_COUNT_RANGE_2 } from '../../logics/consts/toolConsts'
 
 const store = useCanvasStore()
 const appStore = useAppStore()

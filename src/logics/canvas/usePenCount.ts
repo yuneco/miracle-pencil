@@ -1,18 +1,18 @@
 import { useCanvasStore } from '../../stores/CanvasStore'
+import { PEN_COUNT_RANGE_1, PEN_COUNT_RANGE_2 } from '../consts/toolConsts'
 import { constraint } from '../utils/mathUtil'
 
 export const usePenCount = () => {
   const store = useCanvasStore()
   const changePenCount = (isUp: boolean) => {
-    const COUNT_MIN = 1
-    const COUNT_MAX = 16
+
     const [c1, c2] = store.$state.penCount
-    const newCount = (c: number, add: number) =>
-      constraint(c + add, COUNT_MIN, COUNT_MAX)
     if (c2) {
-      store.$state.penCount = [c1, newCount(c2, isUp ? 1 : -1)]
+      const newC2 = constraint(c2 + (isUp ? 1 : -1), PEN_COUNT_RANGE_2.min, PEN_COUNT_RANGE_2.min)
+      store.$state.penCount = [c1, newC2]
     } else {
-      store.$state.penCount = [newCount(c1, isUp ? 1 : -1), c2]
+      const newC1 = constraint(c1 + (isUp ? 1 : -1), PEN_COUNT_RANGE_1.min, PEN_COUNT_RANGE_1.max)
+      store.$state.penCount = [newC1, c2]
     }
   }
 
