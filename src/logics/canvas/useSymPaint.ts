@@ -1,23 +1,31 @@
 import { PaintCanvas, Coordinate } from 'sym-paint'
-import { computed, ref, watch } from 'vue-demi'
+import { ref, watch } from 'vue-demi'
 import { useCanvasStore } from '../../stores/CanvasStore'
+import { usePenCount } from './usePenCount'
 
 const canvas = ref<PaintCanvas | undefined>()
+const penCount = ref<ReturnType<typeof usePenCount>>()
 
-const initKeyboardShortcuts = () => {
-  window.addEventListener('keydown', (ev) => {
-    if (ev.key === 'z' && ev.metaKey) {
-      canvas.value?.undo()
-    }
-  })  
+const onKeydown = (ev: KeyboardEvent) => {
+  if (ev.key === 'ArrowUp') {
+    penCount.value?.penCountUp()
+  }
+  if (ev.key === 'ArrowDown') {
+    penCount.value?.penCountDown()
+  }
+  if (ev.key === 'z' && ev.metaKey) {
+    canvas.value?.undo()
+  }
 }
-initKeyboardShortcuts()
+window.removeEventListener('keydown', onKeydown)
+window.addEventListener('keydown', onKeydown)
+console.log('init')
 
-const init = (
-  parent: HTMLElement,
-  store: ReturnType<typeof useCanvasStore>
-) => {
-  if (canvas.value) {
+const init = (parent: HTMLElement) => {
+  const store = useCanvasStore()
+  penCount.value = usePenCount()
+  const isAlreadyInited = !!canvas.value
+  if (isAlreadyInited) {
     console.warn('SymPaint init called multiple times.')
   }
 
@@ -51,27 +59,48 @@ const init = (
     cv.anchor = new Coordinate()
   })
 
-  watch(() => [store.$state.penColor], () => {
-    cv.penColor = store.$state.penColor
-  })
-  watch(() => [store.$state.penCount], () => {
-    cv.penCount = store.$state.penCount
-  })
-  watch(() => [store.$state.penWidth], () => {
-    cv.penWidth = store.$state.penWidth
-  })
-  watch(() => [store.$state.isStraight], () => {
-    cv.tool = store.isStraight ? 'draw:line' : 'draw'
-  })
-  watch(() => [store.$state.isKaleido], () => {
-    cv.isKaleido = store.isKaleido
-  })
-  watch(() => [store.$state.isEraser], () => {
-    cv.penKind = store.isEraser ? 'eraser' : 'normal'
-  })
-  watch(() => [store.$state.penOpacity], () => {
-    cv.penAlpha = store.$state.penOpacity / 100
-  })
+  watch(
+    () => [store.$state.penColor],
+    () => {
+      cv.penColor = store.$state.penColor
+    }
+  )
+  watch(
+    () => [store.$state.penCount],
+    () => {
+      cv.penCount = store.$state.penCount
+    }
+  )
+  watch(
+    () => [store.$state.penWidth],
+    () => {
+      cv.penWidth = store.$state.penWidth
+    }
+  )
+  watch(
+    () => [store.$state.isStraight],
+    () => {
+      cv.tool = store.isStraight ? 'draw:line' : 'draw'
+    }
+  )
+  watch(
+    () => [store.$state.isKaleido],
+    () => {
+      cv.isKaleido = store.isKaleido
+    }
+  )
+  watch(
+    () => [store.$state.isEraser],
+    () => {
+      cv.penKind = store.isEraser ? 'eraser' : 'normal'
+    }
+  )
+  watch(
+    () => [store.$state.penOpacity],
+    () => {
+      cv.penAlpha = store.$state.penOpacity / 100
+    }
+  )
 
   canvas.value = cv
 }
@@ -81,7 +110,7 @@ export const useSymPaint = () => {
 
   return {
     state: store.$state,
-    init: (parent: HTMLElement) => init(parent, store),
-    toImgBlob: () => canvas.value?.toImgBlob()
+    init: (parent: HTMLElement) => init(parent),
+    toImgBlob: () => canvas.value?.toImgBlob(),
   }
 }
