@@ -69,6 +69,9 @@ const init = (parent: HTMLElement) => {
     () => [store.$state.penCount],
     () => {
       cv.penCount = store.$state.penCount
+      if (store.$state.penCount[0] === 1) {
+        cv.isKaleido = [false, store.$state.isKaleido[1]]
+      }
     }
   )
   watch(
@@ -87,6 +90,9 @@ const init = (parent: HTMLElement) => {
     () => [store.$state.isKaleido],
     () => {
       cv.isKaleido = store.isKaleido
+      if (store.$state.penCount[0] === 1) {
+        cv.isKaleido = [false, store.$state.isKaleido[1]]
+      }
     }
   )
   watch(
