@@ -1,13 +1,13 @@
 <template>
-  <div class="PaintCanvas" ref="el"></div>
+  <div ref="el" class="PaintCanvas" />
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue';
-import { useSymPaint } from '../logics/canvas/useSymPaint';
+import { onMounted, ref } from 'vue'
+import { useSymPaint } from '../logics/canvas/useSymPaint'
 
 const el = ref<HTMLElement>()
-const {init} = useSymPaint()
+const { init } = useSymPaint()
 
 onMounted(() => {
   const parent = el.value

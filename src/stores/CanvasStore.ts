@@ -1,6 +1,15 @@
 import { defineStore } from 'pinia'
 
-type CanvasToolName = 'draw' | 'scroll' | 'scroll:anchor' | 'zoomup' | 'zoomdown' | 'rotate' | 'rotate:anchor' | 'draw:line' | 'draw:stamp';
+type CanvasToolName =
+  | 'draw'
+  | 'scroll'
+  | 'scroll:anchor'
+  | 'zoomup'
+  | 'zoomdown'
+  | 'rotate'
+  | 'rotate:anchor'
+  | 'draw:line'
+  | 'draw:stamp'
 
 export const useCanvasStore = defineStore('canvas', {
   state: () => ({
@@ -11,6 +20,6 @@ export const useCanvasStore = defineStore('canvas', {
     isStraight: false,
     isEraser: false,
     penOpacity: 100,
-    tool: 'draw' as CanvasToolName
+    tool: 'draw' as CanvasToolName,
   }),
 })

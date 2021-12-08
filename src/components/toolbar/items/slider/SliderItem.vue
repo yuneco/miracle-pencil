@@ -21,7 +21,7 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, watch } from 'vue'
+import { reactive, watch } from "vue"
 import { constraint, stepValue } from '../../../../logics/utils/mathUtil'
 import PaletteItem from '../PaletteItem.vue'
 import Slider from './Slider.vue'
@@ -47,7 +47,7 @@ const props = withDefaults(
     step: 1,
     label: '',
     unit: '',
-    disabled: false,
+    disabled: false
   }
 )
 
