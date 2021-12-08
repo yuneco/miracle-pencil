@@ -22,7 +22,7 @@
 
 <script lang="ts" setup>
 import { reactive, watch } from 'vue'
-import { constraint, stepValue } from '../../../../logics/utils/MathUtil'
+import { constraint, stepValue } from '../../../../logics/utils/mathUtil'
 import PaletteItem from '../PaletteItem.vue'
 import Slider from './Slider.vue'
 import { startDragX } from '../startDrag'

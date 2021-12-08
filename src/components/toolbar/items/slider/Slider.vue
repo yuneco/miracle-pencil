@@ -21,7 +21,7 @@
 
 <script lang="ts" setup>
 import { computed, onUnmounted, reactive } from 'vue'
-import { constraint, stepValue } from '../../../../logics/utils/MathUtil'
+import { constraint, stepValue } from '../../../../logics/utils/mathUtil'
 import { sleep } from '../../../../logics/utils/sleep'
 
 const BAR_WIDTH = 120
