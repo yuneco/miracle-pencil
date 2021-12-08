@@ -30,6 +30,7 @@ import Toast from './components/common/Toast.vue';
     z-index: 1;
     width: 100%;
     height: 64px;
+    touch-action: none;
   }
   .canvas {
     position: absolute;
