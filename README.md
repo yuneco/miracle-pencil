@@ -1,11 +1,32 @@
-# Vue 3 + Typescript + Vite
+# miracle pencil
 
-This template should help get you started developing with Vue 3 and Typescript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+try now! https://yuneco.github.io/miracle-pencil/
 
-## Recommended IDE Setup
+## 操作方法
 
-- [VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volar)
+画面のパレット以外の操作方法は次の通りです
 
-## Type Support For `.vue` Imports in TS
+### PC（非タッチデバイス）
 
-Since TypeScript cannot handle type information for `.vue` imports, they are shimmed to be a generic Vue component type by default. In most cases this is fine if you don't really care about component prop types outside of templates. However, if you wish to get actual prop types in `.vue` imports (for example to get props validation when using manual `h(...)` calls), you can enable Volar's `.vue` type support plugin by running `Volar: Switch TS Plugin on/off` from VSCode command palette.
+※ Windowsの場合はOption→Alt、Command→Controlで読み替えてください
+
+| 操作 | 機能 |
+| ---- | ---- |
+| Space + ドラッグ | キャンバスのスクロール |
+| Space + Option + ドラッグ | キャンバスの回転 |
+| Space + Command + クリック | 拡大 |
+| Space + Option + Command + クリック | 縮小 |
+| Space + Shift + ドラッグ | 対称軸の移動 |
+| Space + Shift + Option + ドラッグ | 対称軸の回転 |
+| Command + Z | 取り消し |
+
+
+### タブレット（iPadなどのタッチデバイス） 
+
+| 操作 | 機能 |
+| ---- | ---- |
+| 二本指でスワイプ・ピンチ | キャンバスのスクロール・回転・拡大縮小 |
+| 三本指でスワイプ | 対称軸のスクロール・回転 |
+| 二本指でタップ | 取り消し |
+| 三本指でタップ | 対称軸をセンターに戻す |
+
