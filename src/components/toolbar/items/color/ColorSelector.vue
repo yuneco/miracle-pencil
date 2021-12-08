@@ -48,6 +48,7 @@ const changeColor = (ev: Event) => {
     right: 0px;
     border: 2px solid #fff;
     border-radius: 4px;
+    pointer-events: none;
     z-index: 1;
   }
 
