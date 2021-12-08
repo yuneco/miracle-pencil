@@ -25,6 +25,7 @@ jobs:
       - name: Build
         run: |
           yarn cache clean
+          yarn install --network-concurrency 1
           yarn install
           yarn build
 
