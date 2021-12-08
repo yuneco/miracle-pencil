@@ -127,8 +127,10 @@ const changeValue = (v: number) => {
   cursor: ew-resize;
   .slider {
     position: absolute;
-    top: 38px;
-    left: 24px;
+    z-index: 1;
+    top: 39px;
+    left: 60px;
+    transform: translateX(-50%);
     filter: drop-shadow(0 0 8px #00000066);
     padding: 4px;
     background-color: #fff;
@@ -138,8 +140,8 @@ const changeValue = (v: number) => {
       position: absolute;
       width: 10px;
       height: 10px;
-      top: -4px;
-      left: 8px;
+      top: -3px;
+      left: calc(50% - 28px);
       background-color: #fff;
       border-radius: 2px;
       transform: rotate(45deg);
