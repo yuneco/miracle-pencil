@@ -1,4 +1,4 @@
-import { PaintCanvas, Coordinate } from 'sym-paint'
+import { PaintCanvas, Coordinate, utils } from 'sym-paint'
 import { ref, watch } from 'vue-demi'
 import { useCanvasStore } from '../../stores/CanvasStore'
 import { usePenCount } from './usePenCount'
@@ -19,7 +19,7 @@ const onKeydown = (ev: KeyboardEvent) => {
 }
 window.removeEventListener('keydown', onKeydown)
 window.addEventListener('keydown', onKeydown)
-console.log('init')
+
 
 const init = (parent: HTMLElement) => {
   const store = useCanvasStore()
@@ -39,25 +39,37 @@ const init = (parent: HTMLElement) => {
 
   // キャンバスからの変更要求を受け取りパレットの設定を変更
   cv.listenRequestZoom((scale) => {
-    //setting.scale = scale
     cv.coord = cv.coord.clone({ scale })
   })
-  cv.listenRequestScrollTo((pos) => {
-    cv.coord = cv.coord.clone({ scroll: pos })
+  cv.listenRequestScrollTo(({point, target}) => {
+    if (target === 'canvas') {
+      cv.coord = cv.coord.clone({ scroll: point })
+    }
+    if (target === 'anchor') {
+      cv.activeAnchor = cv.activeAnchor.clone({ scroll: point })
+    }
   })
-  cv.listenRequestRotateTo((angle) => {
-    cv.coord = cv.coord.clone({ angle })
+  cv.listenRequestRotateTo(({angle, target}) => {
+    if (target === 'canvas') {
+      cv.coord = cv.coord.clone({ angle })
+    }
+    if (target === 'anchor') {
+      cv.activeAnchor = cv.activeAnchor.clone({ angle })
+    }
   })
   cv.listenRequestUndo(() => {
     cv.undo()
   })
-  cv.listenRequestAnchorTransform(({ coord, target }) => {
-    if (target === 'root') cv.anchor = coord
-    if (target === 'child') cv.childAnchor = coord
+  cv.listenRequestAnchorTransform((coord) => {
+    cv.activeAnchor = coord
   })
   cv.listenRequestAnchorReset(() => {
     cv.anchor = new Coordinate()
   })
+
+  const toolKeyWatcher = new utils.ToolKeyWatcher()
+  toolKeyWatcher.listenChange((tool) => (store.tool = tool))
+
 
   watch(
     () => [store.$state.penColor],
@@ -105,6 +117,12 @@ const init = (parent: HTMLElement) => {
     () => [store.$state.penOpacity],
     () => {
       cv.penAlpha = store.$state.penOpacity / 100
+    }
+  )
+  watch(
+    () => [store.$state.tool],
+    () => {
+      cv.tool = store.$state.tool
     }
   )
 
