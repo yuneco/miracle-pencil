@@ -167,6 +167,7 @@ const openExport = () => {
   top: 8px;
   left: 0;
   gap: 4px;
+  user-select: none !important;
   filter: drop-shadow(0px 0px 6px #00000033);
   .radioGroup {
     display: flex;

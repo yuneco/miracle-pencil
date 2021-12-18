@@ -57,6 +57,8 @@ const onselect = async (key: SwitchOption['key']) => {
   .list {
     list-style-type: none;
     display: flex;
+    position: relative;
+    z-index: 1;
     margin: 0;
     padding: 0;
 

@@ -82,6 +82,7 @@ const borderStyle = computed(() => {
   padding: 0 4px;
   cursor: inherit;
   margin: 0;
+  appearance: none;
   &__disabled {
     opacity: 0.3;
     pointer-events: none;
@@ -105,7 +106,8 @@ const borderStyle = computed(() => {
     height: 30px;
     background-repeat: no-repeat;
     background-position: center;
-    pointer-events: none;
+    user-select: none !important;
+    pointer-events: none !important;
   }
 
   .label {
@@ -116,6 +118,8 @@ const borderStyle = computed(() => {
     height: 100%;
     min-width: 24px;
     color: var(--text-color);
+    user-select: none !important;
+    pointer-events: none !important;
   }
 }
 </style>
