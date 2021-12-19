@@ -1572,7 +1572,7 @@ svg-variable-width-line@^0.1.2:
 
 "sym-paint@https://github.com/yuneco/symmpaint.git":
   version "0.0.7"
-  resolved "https://github.com/yuneco/symmpaint.git#3e0e16073995937fbb7fa296b9f20bf25ca28a5e"
+  resolved "https://github.com/yuneco/symmpaint.git#1ec5920c6af581c024fdd70f39486653fb356129"
   dependencies:
     svg-variable-width-line "^0.1.2"
 

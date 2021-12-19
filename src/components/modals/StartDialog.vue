@@ -10,7 +10,9 @@
       </div>
       <div class="content">
         <div class="title">Miracle Pencil</div>
-        <div class="body"></div>
+        <div class="body">
+          簡単な使い方の説明など
+        </div>
         <div class="buttons">
           <PureButton @click="emit('close')">START</PureButton>
         </div>
