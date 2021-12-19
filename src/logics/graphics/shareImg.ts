@@ -6,9 +6,8 @@ export const shareImage = async (pngImgBlob: Blob) => {
 
   const data: ShareData = {
     files: [imgFile],
-    url: 'https://yuneco.github.io/miracle-pencil/',
     title: 'miracle-pencil',
-    text: 'Made with miracle-pencil'
+    text: 'Made with https://yuneco.github.io/miracle-pencil/  #ミラクルペンシル'
   }
 
   return navigator.share(data)

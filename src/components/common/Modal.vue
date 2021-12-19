@@ -61,12 +61,12 @@ const hasContent = computed(() => {
     }
   }
   &.fade-leave-active {
-    transition: 0.5s;
+    transition: 0.25s;
     .bg {
-      transition: opacity 0.5s;
+      transition: opacity 0.25s;
     }
     .content {
-      transition: transform 0.5s, opacity 0.5s;
+      transition: transform 0.25s, opacity 0.25s;
     }
   }
   &.fade-enter-from {

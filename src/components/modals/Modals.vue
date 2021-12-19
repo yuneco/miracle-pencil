@@ -1,5 +1,6 @@
 <template>
 <Modal>
+  <StartDialog v-if="modalName === 'start'" @close="closeModal" />
   <ExportDialog v-if="modalName === 'export'" @close="closeModal" />
 </Modal>
 </template>
@@ -8,6 +9,7 @@
 import { computed } from 'vue-demi';
 import { useAppStore } from '../../stores/AppStore';
 import ExportDialog from './ExportDialog.vue';
+import StartDialog from './StartDialog.vue';
 import Modal from '../common/Modal.vue';
 
 const store = useAppStore()

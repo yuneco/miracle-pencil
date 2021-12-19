@@ -20,6 +20,7 @@ import { computed, ref } from 'vue'
 import { sleep } from '../../../logics/utils/sleep'
 import PaletteIcon from '../../icons/PaletteIcon.vue'
 import { PaletteIconSymbol } from '../../icons/PaletteIconSymbol'
+import { theme } from '../../consts/theme';
 
 const props = withDefaults(
   defineProps<{
@@ -117,7 +118,7 @@ const borderStyle = computed(() => {
     font-size: 13px;
     height: 100%;
     min-width: 24px;
-    color: var(--text-color);
+    color: v-bind('theme.textColor');
     user-select: none !important;
     pointer-events: none !important;
   }

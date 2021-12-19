@@ -5,6 +5,13 @@
 </template>
 
 <script lang="ts" setup>
+const props = withDefaults(
+  defineProps<{
+    foreColor: string
+    bgColor: string
+  }>(),
+  { foreColor: '#999', bgColor: '#fff' }
+)
 const emit = defineEmits<{
   (e: 'click'): void
 }>()
@@ -23,10 +30,10 @@ $size: 32px;
     font-size: 0;
     width: $size;
     height: $size;
-    border: 2px solid #aaa;
+    border: 2px solid v-bind('props.foreColor');
     font-size: 0;
-    color: #888;
-    background-color: #fff;
+    color: v-bind('props.foreColor');
+    background-color: v-bind('props.bgColor');
     position: relative;
     border-radius: $size;
     cursor: pointer;

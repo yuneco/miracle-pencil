@@ -49,6 +49,7 @@ import { imgToBlob } from '../../logics/graphics/imgToBlob'
 import { shareImage } from '../../logics/graphics/shareImg'
 import PureButton from '../common/PureButton.vue'
 import { useAppStore } from '../../stores/AppStore'
+import { theme } from '../consts/theme'
 
 const IMG_BOX_SIZE = 240
 const appStore = useAppStore()
@@ -159,7 +160,7 @@ loadImg()
         border: 2px solid #ddd;
         box-shadow: 0 0 8px #00000011;
         &.selected {
-          border: 2px solid var(--theme-color);
+          border: 2px solid v-bind('theme.themeColor');
         }
       }
     }

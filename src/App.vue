@@ -4,6 +4,7 @@ import PaintCanvas from './components/PaintCanvas.vue'
 import Toolbar from './components/toolbar/Toolbar.vue'
 import Modals from './components/modals/Modals.vue';
 import Toast from './components/common/Toast.vue';
+
 </script>
 
 <template>
@@ -21,7 +22,7 @@ import Toast from './components/common/Toast.vue';
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss">
 #app {
   text-align: center;
   color: #2c3e50;

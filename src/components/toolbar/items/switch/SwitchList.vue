@@ -7,7 +7,7 @@
         :key="opt.key"
         class="opt"
         :class="{ selected: opt.key === modelValue }"
-        @click="onselect(opt.key)"
+        @pointerdown="onselect(opt.key)"
       >
         <div v-if="opt.icon" class="icon">
           <PaletteIcon :symbol="opt.icon" />
@@ -21,6 +21,7 @@
 import { sleep } from '../../../../logics/utils/sleep'
 import { SwitchOption } from './SwitchOption'
 import PaletteIcon from '../../../icons/PaletteIcon.vue'
+import { theme } from '../../../consts/theme'
 
 const props = withDefaults(
   defineProps<{
@@ -67,7 +68,7 @@ const onselect = async (key: SwitchOption['key']) => {
       padding: 2px;
       border-radius: 4px;
       &.selected {
-        background-color: var(--theme-color);
+        background-color: v-bind('theme.themeColor');
       }
       .icon {
         width: 30px;

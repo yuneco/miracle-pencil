@@ -1,5 +1,5 @@
 <template>
-  <div class="ColorSelector" @click="open">
+  <div class="ColorSelector" @pointerdown="open">
     <div
       class="view"
       :style="{

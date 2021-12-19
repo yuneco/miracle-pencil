@@ -23,6 +23,7 @@
 import { computed, onUnmounted, reactive } from 'vue'
 import { constraint, stepValue } from '../../../../logics/utils/mathUtil'
 import { sleep } from '../../../../logics/utils/sleep'
+import { theme } from '../../../consts/theme'
 
 const BAR_WIDTH = 120
 
@@ -108,7 +109,7 @@ const close = () => {
       width: 100%;
       height: 100%;
       transform-origin: left center;
-      background-color: var(--theme-color);
+      background-color: v-bind('theme.themeColor');
     }
     .value {
       position: absolute;

@@ -1,5 +1,5 @@
 <template>
-  <div class="Toolbar">
+  <div class="Toolbar" @touchstart="preventEvent">
     <div class="radioGroup">
       <ColorSelectItem
         v-model="store.$state.penColor"
@@ -154,6 +154,16 @@ const pen2Kaleido = computed<'mirror' | 'kaleido'>({
 const openExport = () => {
   if (appStore.$state.modal) return
   appStore.$state.modal = 'export'
+}
+
+// パレット上でのズームやテキスト選択を防止するためpreventDefaultする
+// ただし、<input type=color>のみ標準起用を利用しているので、この場合はpreventDefaultしない
+const preventEvent = (ev: TouchEvent) => {
+  const target = ev.target
+  if (target && target instanceof HTMLInputElement) {
+    if (target.type === 'color') return true
+  }
+  ev.preventDefault()
 }
 </script>
 
