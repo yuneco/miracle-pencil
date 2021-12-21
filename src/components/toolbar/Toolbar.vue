@@ -1,16 +1,16 @@
 <template>
   <div class="Toolbar" @touchstart="preventEvent">
+
     <div class="radioGroup">
       <ColorSelectItem
         v-model="store.$state.penColor"
-        :checked="!store.isEraser"
-        @update:checked="(v) => v && selectPen()"
+        :checked="isPen"
+        @update:checked="v => isPen = v"
         edge="left"
         icon="pen"
       />
       <CheckItem
-        :modelValue="store.isEraser"
-        @update:modelValue="(v) => v && selectEraser()"
+        v-model="isEraser"
         edge="right"
         icon="eraser"
       />
@@ -127,12 +127,24 @@ const penStraightType = computed<'line' | 'free'>({
   get: () => (store.isStraight ? 'line' : 'free'),
 })
 
-const selectPen = () => {
-  store.isEraser = false
-}
-const selectEraser = () => {
-  store.isEraser = true
-}
+const isPen = computed({
+  get: () => store.tool === 'draw' && !store.isEraser,
+  set: (v) => {
+    if (!v) return
+    store.tool = 'draw'
+    store.isEraser = false
+  }
+})
+
+const isEraser = computed({
+  get: () => store.tool === 'draw' && store.isEraser,
+  set: (v) => {
+    if (!v) return
+    store.tool = 'draw'
+    store.isEraser = true
+  }
+})
+
 
 const penKaleidoOpts: SwitchOption[] = [
   { key: 'mirror', label: 'mirror', icon: 'mode_mirror' },
@@ -179,6 +191,10 @@ const preventEvent = (ev: TouchEvent) => {
   gap: 4px;
   user-select: none !important;
   filter: drop-shadow(0px 0px 6px #00000033);
+  pointer-events: none;
+  > * {
+    pointer-events: auto;
+  }
   .radioGroup {
     display: flex;
     gap: 0;

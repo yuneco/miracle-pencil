@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 
-type CanvasToolName =
+type MirCanvasTool =
   | 'draw'
   | 'scroll'
   | 'scroll:anchor'
@@ -8,8 +8,6 @@ type CanvasToolName =
   | 'zoomdown'
   | 'rotate'
   | 'rotate:anchor'
-  | 'draw:line'
-  | 'draw:stamp'
 
 export const useCanvasStore = defineStore('canvas', {
   state: () => ({
@@ -20,6 +18,6 @@ export const useCanvasStore = defineStore('canvas', {
     isStraight: false,
     isEraser: false,
     penOpacity: 100,
-    tool: 'draw' as CanvasToolName,
+    tool: 'draw' as MirCanvasTool,
   }),
 })

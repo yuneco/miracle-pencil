@@ -2,6 +2,7 @@
 import './style/defaultStyle.scss'
 import PaintCanvas from './components/PaintCanvas.vue'
 import Toolbar from './components/toolbar/Toolbar.vue'
+import SideToolbar from './components/toolbar/SideToolbar.vue'
 import Modals from './components/modals/Modals.vue';
 import Toast from './components/common/Toast.vue';
 
@@ -10,6 +11,9 @@ import Toast from './components/common/Toast.vue';
 <template>
   <div class="toolbar">
     <Toolbar />
+  </div>
+  <div class="sidetoolbar">
+    <SideToolbar />
   </div>
   <div class="canvas">
     <PaintCanvas />
@@ -30,7 +34,14 @@ import Toast from './components/common/Toast.vue';
     position: absolute;
     z-index: 1;
     width: 100%;
-    height: 64px;
+    touch-action: none;
+  }
+  .sidetoolbar {
+    position: absolute;
+    z-index: 1;
+    width: 60px;
+    height: 100%;
+    right: 0;
     touch-action: none;
   }
   .canvas {

@@ -68,7 +68,19 @@ const init = (parent: HTMLElement) => {
   })
 
   const toolKeyWatcher = new utils.ToolKeyWatcher()
-  toolKeyWatcher.listenChange((tool) => (store.tool = tool))
+  toolKeyWatcher.listenChange((tool) => {
+    if (tool === 'draw' || tool === 'draw:stamp') { // stampは現時点ではサポートしないため、通常のペンツールとして扱う
+      store.tool = 'draw'
+      store.isStraight = false
+      return
+    }
+    if (tool === 'draw:line') {
+      store.tool = 'draw'
+      store.isStraight = true
+      return
+    }
+    store.tool = tool
+  })
 
 
   watch(
@@ -136,5 +148,6 @@ export const useSymPaint = () => {
     state: store.$state,
     init: (parent: HTMLElement) => init(parent),
     toImgBlob: () => canvas.value?.toImgBlob(),
+    undo: () => canvas.value?.undo()
   }
 }

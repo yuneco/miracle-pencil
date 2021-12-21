@@ -42,8 +42,8 @@ const changeColor = (ev: Event) => {
   height: 30px;
   .view {
     position: absolute;
-    width: 30px;
-    height: 30px;
+    width: 26px;
+    height: 26px;
     top: 0;
     right: 0px;
     border: 2px solid #fff;
@@ -54,8 +54,8 @@ const changeColor = (ev: Event) => {
 
   input {
     position: relative;
-    width: 30px;
-    height: 30px;
+    width: 26px;
+    height: 26px;
     border-radius: 4px;
     border: none;
   }

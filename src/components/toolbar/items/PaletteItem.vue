@@ -80,7 +80,7 @@ const borderStyle = computed(() => {
   border: 1px solid #aaa;
   background-color: #fff;
   transition: background-color 0.25s;
-  padding: 0 4px;
+  padding: 2px;
   cursor: inherit;
   margin: 0;
   appearance: none;
@@ -103,6 +103,8 @@ const borderStyle = computed(() => {
 
   .icon {
     display: inline-block;
+    position: relative;
+    top: -2px;
     width: 30px;
     height: 30px;
     background-repeat: no-repeat;
