@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, watch } from 'vue-demi'
+import { computed, ref, watch } from 'vue'
 import { useDelayed } from '../../logics/utils/useDelay'
 import { useAppStore } from '../../stores/AppStore'
 

@@ -9,7 +9,7 @@
 <script lang="ts" setup>
 import CheckItem from '../CheckItem.vue'
 import ColorSelector from './ColorSelector.vue'
-import { computed } from 'vue-demi'
+import { computed } from 'vue'
 import { PaletteIconSymbol } from '../../../icons/PaletteIconSymbol'
 const props = withDefaults(defineProps<{
   modelValue: string

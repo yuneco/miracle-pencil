@@ -1,4 +1,4 @@
-import { onUnmounted, ref, Ref, shallowRef, watch } from 'vue-demi'
+import { onUnmounted, ref, Ref, shallowRef, watch } from 'vue'
 
 export const useDelayed = <T>(inRef: Ref<T>, delayMs: number) => {
   const outRef = shallowRef(inRef.value)

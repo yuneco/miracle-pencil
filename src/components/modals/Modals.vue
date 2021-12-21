@@ -6,7 +6,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue-demi';
+import { computed } from 'vue';
 import { useAppStore } from '../../stores/AppStore';
 import ExportDialog from './ExportDialog.vue';
 import StartDialog from './StartDialog.vue';

@@ -1,5 +1,5 @@
 import { PaintCanvas, Coordinate, utils } from 'sym-paint'
-import { ref, watch } from 'vue-demi'
+import { ref, watch } from 'vue'
 import { useCanvasStore } from '../../stores/CanvasStore'
 import { usePenCount } from './usePenCount'
 
