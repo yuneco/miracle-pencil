@@ -28,12 +28,14 @@ const props = withDefaults(
     label?: string
     checked?: boolean
     edge?: 'left' | 'right' | 'both' | 'none'
+    cornerStyle?: 'default' | 'round'
     disabled?: boolean
     enableFlash?: boolean
   }>(),
   {
     checked: false,
     edge: 'both',
+    cornerStyle: 'default',
     disabled: false,
     enableFlash: true
   }
@@ -55,6 +57,8 @@ const check = async () => {
   }
 }
 
+const radius = computed(() => props.cornerStyle === 'round' ? '18px' : '4px')
+
 const borderStyle = computed(() => {
   const borderRadius = {
     left: [true, false, false, true],
@@ -62,7 +66,7 @@ const borderStyle = computed(() => {
     both: [true, true, true, true],
     none: [false, false, false, false],
   }[props.edge]
-    .map((v) => (v ? '4px' : '0'))
+    .map((v) => (v ? radius.value : '0'))
     .join(' ')
   return {
     borderRadius,
@@ -76,7 +80,7 @@ const borderStyle = computed(() => {
 .PaletteItem {
   display: inline-flex;
   position: relative;
-  height: 32px;
+  height: 36px;
   border: 1px solid #aaa;
   background-color: #fff;
   transition: background-color 0.25s;
@@ -104,7 +108,6 @@ const borderStyle = computed(() => {
   .icon {
     display: inline-block;
     position: relative;
-    top: -2px;
     width: 30px;
     height: 30px;
     background-repeat: no-repeat;

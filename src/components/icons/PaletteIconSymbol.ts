@@ -11,3 +11,7 @@ export type PaletteIconSymbol =
   | 'width'
   | 'export'
   | 'other'
+  | 'move'
+  | 'rotate'
+  | 'undo'
+  | 'redo'

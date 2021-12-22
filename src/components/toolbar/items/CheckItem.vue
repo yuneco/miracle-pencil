@@ -5,6 +5,7 @@
       :icon="icon"
       :checked="modelValue"
       :edge="edge"
+      :cornerStyle="cornerStyle"
       @check="oncheck"
       ><slot />
     </PaletteItem>
@@ -20,6 +21,7 @@ const props = withDefaults(
     label?: string
     icon?: PaletteIconSymbol
     edge?: 'left' | 'right' | 'both' | 'none'
+    cornerStyle?: 'default' | 'round'
   }>(),
   {
     label: '',

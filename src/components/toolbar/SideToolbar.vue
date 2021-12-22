@@ -1,9 +1,9 @@
 <template>
 <div class="SideToolbar">
-  <CheckItem v-model="isAnchorRotateTool" icon="count" />
-  <CheckItem v-model="isAnchorMoveTool" icon="count" />
-  <div class="item">
-    <PaletteItem @check="undo" icon="count" label="" />
+  <CheckItem v-model="isAnchorRotateTool" icon="rotate" cornerStyle="round" />
+  <CheckItem v-model="isAnchorMoveTool" icon="move" cornerStyle="round" />
+  <div class="undo">
+    <PaletteItem @check="undo" icon="undo" label="" cornerStyle="round" />
   </div>
 </div>
 </template>
@@ -59,6 +59,10 @@ const isAnchorMoveTool = computed({
   .radioGroup {
     display: flex;
     gap: 0;
+  }
+
+  .undo {
+    padding-top: 12px;
   }
 
 }
