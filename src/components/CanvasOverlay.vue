@@ -1,12 +1,14 @@
 <template>
   <div class="CanvasOverlay">
     <div v-if="activeAnchorPos" class="marker">
-      <CanvasAnchorMaker
-        v-if="markerSymbol"
-        class="markerImage"
-        :symbol="markerSymbol"
-        :color="activeAnchorColor"
-      />
+      <transition name="fade" appear>
+        <CanvasAnchorMaker
+          v-if="markerSymbol"
+          class="markerImage"
+          :symbol="markerSymbol"
+          :color="activeAnchorColor"
+        />
+      </transition>
     </div>
   </div>
 </template>
@@ -15,15 +17,11 @@
 import { computed, onMounted, ref, watch } from 'vue'
 import CanvasAnchorMaker from './icons/CanvasAnchorMaker.vue'
 import { useSymPaint } from '../logics/canvas/useSymPaint'
-const {
-  state: store,
-  activeAnchorPos,
-  activeAnchorColor,
-} = useSymPaint()
-
+const { state: store, activeAnchorPos, activeAnchorColor } = useSymPaint()
 
 const markerPosTransform = computed(
-  () => `translate(${activeAnchorPos.value?.x}px, ${activeAnchorPos.value?.y}px)`
+  () =>
+    `translate(${activeAnchorPos.value?.x}px, ${activeAnchorPos.value?.y}px)`
 )
 const markerSymbol = computed(() => {
   const tool = store.tool
@@ -50,6 +48,19 @@ const markerSymbol = computed(() => {
       height: 20vw;
       transform: translate(-50%, -50%);
       opacity: 0.25;
+    }
+
+    .fade-enter-active {
+      transition: opacity 2s 1s;
+    }
+    .fade-leave-active {
+      transition: opacity 0.2s;
+    }
+    .fade-enter-from {
+      opacity: 1;
+    }
+    .fade-leave-to {
+      opacity: 0;
     }
   }
 }
