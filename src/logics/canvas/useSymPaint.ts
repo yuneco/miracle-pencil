@@ -1,5 +1,5 @@
-import { PaintCanvas, Coordinate, utils } from 'sym-paint'
-import { ref, watch } from 'vue'
+import { PaintCanvas, Coordinate, utils, Point } from 'sym-paint'
+import { computed, ref, watch } from 'vue'
 import { useCanvasStore } from '../../stores/CanvasStore'
 import { usePenCount } from './usePenCount'
 
@@ -20,7 +20,6 @@ const onKeydown = (ev: KeyboardEvent) => {
 window.removeEventListener('keydown', onKeydown)
 window.addEventListener('keydown', onKeydown)
 
-
 const init = (parent: HTMLElement) => {
   const store = useCanvasStore()
   penCount.value = usePenCount()
@@ -36,25 +35,31 @@ const init = (parent: HTMLElement) => {
   cv.tool = store.isStraight ? 'draw:line' : 'draw'
   cv.isKaleido = store.isKaleido
   cv.penKind = store.isEraser ? 'eraser' : 'normal'
+  cv.anchor = store.anchor[0] as Coordinate
+  cv.childAnchor = store.anchor[1] as Coordinate
 
   // キャンバスからの変更要求を受け取りパレットの設定を変更
   cv.listenRequestZoom((scale) => {
-    cv.coord = cv.coord.clone({ scale })
+    store.coord = cv.coord.clone({ scale })
   })
-  cv.listenRequestScrollTo(({point, target}) => {
+  cv.listenRequestScrollTo(({ point, target }) => {
     if (target === 'canvas') {
-      cv.coord = cv.coord.clone({ scroll: point })
+      store.coord = cv.coord.clone({ scroll: point })
     }
     if (target === 'anchor') {
-      cv.activeAnchor = cv.activeAnchor.clone({ scroll: point })
+      const index = cv.hasSubPen ? 1 : 0
+      store.anchor[index] = cv.activeAnchor.clone({ scroll: point })
+      // cv.activeAnchor = cv.activeAnchor.clone({ scroll: point })
     }
   })
-  cv.listenRequestRotateTo(({angle, target}) => {
+  cv.listenRequestRotateTo(({ angle, target }) => {
     if (target === 'canvas') {
-      cv.coord = cv.coord.clone({ angle })
+      store.coord = cv.coord.clone({ angle })
     }
     if (target === 'anchor') {
-      cv.activeAnchor = cv.activeAnchor.clone({ angle })
+      const index = cv.hasSubPen ? 1 : 0
+      store.anchor[index] = cv.activeAnchor.clone({ angle })
+      // cv.activeAnchor = cv.activeAnchor.clone({ angle })
     }
   })
   cv.listenRequestUndo(() => {
@@ -69,7 +74,8 @@ const init = (parent: HTMLElement) => {
 
   const toolKeyWatcher = new utils.ToolKeyWatcher()
   toolKeyWatcher.listenChange((tool) => {
-    if (tool === 'draw' || tool === 'draw:stamp') { // stampは現時点ではサポートしないため、通常のペンツールとして扱う
+    if (tool === 'draw' || tool === 'draw:stamp') {
+      // stampは現時点ではサポートしないため、通常のペンツールとして扱う
       store.tool = 'draw'
       store.isStraight = false
       return
@@ -82,72 +88,122 @@ const init = (parent: HTMLElement) => {
     store.tool = tool
   })
 
-
   watch(
-    () => [store.$state.penColor],
+    () => [store.penColor],
     () => {
-      cv.penColor = store.$state.penColor
+      cv.penColor = store.penColor
     }
   )
   watch(
-    () => [store.$state.penCount],
+    () => [store.penCount],
     () => {
-      cv.penCount = store.$state.penCount
-      if (store.$state.penCount[0] === 1) {
-        cv.isKaleido = [false, store.$state.isKaleido[1]]
+      cv.penCount = store.penCount
+      if (store.penCount[0] === 1) {
+        cv.isKaleido = [false, store.isKaleido[1]]
       }
     }
   )
   watch(
-    () => [store.$state.penWidth],
+    () => [store.penWidth],
     () => {
-      cv.penWidth = store.$state.penWidth
+      cv.penWidth = store.penWidth
     }
   )
   watch(
-    () => [store.$state.isStraight],
+    () => [store.isStraight],
     () => {
       cv.tool = store.isStraight ? 'draw:line' : 'draw'
     }
   )
   watch(
-    () => [store.$state.isKaleido],
+    () => [store.isKaleido],
     () => {
       cv.isKaleido = store.isKaleido
-      if (store.$state.penCount[0] === 1) {
-        cv.isKaleido = [false, store.$state.isKaleido[1]]
+      if (store.penCount[0] === 1) {
+        cv.isKaleido = [false, store.isKaleido[1]]
       }
     }
   )
   watch(
-    () => [store.$state.isEraser],
+    () => [store.isEraser],
     () => {
       cv.penKind = store.isEraser ? 'eraser' : 'normal'
     }
   )
   watch(
-    () => [store.$state.penOpacity],
+    () => [store.penOpacity],
     () => {
-      cv.penAlpha = store.$state.penOpacity / 100
+      cv.penAlpha = store.penOpacity / 100
     }
   )
   watch(
-    () => [store.$state.tool],
+    () => [store.tool],
     () => {
-      cv.tool = store.$state.tool
+      cv.tool = store.tool
     }
   )
-
+  watch(
+    () => [store.coord],
+    () => {
+      cv.coord = store.coord as Coordinate
+    }
+  )
+  watch(
+    () => [store.anchor[0]],
+    () => {
+      cv.anchor = store.anchor[0] as Coordinate
+    }
+  )
+  watch(
+    () => [store.anchor[1]],
+    () => {
+      cv.childAnchor = store.anchor[1] as Coordinate
+    }
+  )
   canvas.value = cv
 }
 
+// TODO: この計算はライブラリ側が行うべき
+const view2canvas = (p: { x: number; y: number }) => {
+  if (!canvas.value) return
+  const vp = new Point(p.x, p.y)
+    .move(new Point(-canvas.value.width / 2, -canvas.value.height / 2))
+    .scale(2)
+  return vp
+}
+
+// TODO: この計算はライブラリ側が行うべき
+const canvas2view = (p: { x: number; y: number }) => {
+  if (!canvas.value) return
+  const cp = new Point(p.x, p.y)
+  return canvas.value
+    .canvas2viewPos(cp, 'current')
+    .scale(0.5)
+    .move(new Point(canvas.value.width / 2, canvas.value.height / 2))
+}
+
+// TODO: アンカーの色はsympaint側にハードコードされてしまっているため、利用側から設定・取得可能にすること
+const ANCHOR_COLOR = ['#91bccc', '#eeaabb']
+
 export const useSymPaint = () => {
   const store = useCanvasStore()
+  const hasSubAnchor = computed(() => store.penCount[1] >= 1)
+
+  const activeAnchor = computed(() => store.anchor[hasSubAnchor.value ? 1 : 0])
+  const activeAnchorColor = computed(
+    () => ANCHOR_COLOR[hasSubAnchor.value ? 1 : 0]
+  )
+  const activeAnchorPos = computed(() => canvas2view(activeAnchor.value.scroll))
 
   return {
-    state: store.$state,
+    state: store,
     init: (parent: HTMLElement) => init(parent),
     toImgBlob: () => canvas.value?.toImgBlob(),
-    undo: () => canvas.value?.undo()
+    undo: () => canvas.value?.undo(),
+    view2canvas,
+    canvas2view,
+    activeAnchor,
+    activeAnchorColor,
+    activeAnchorPos,
   }
 }

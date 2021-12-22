@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { Coordinate, Point } from 'sym-paint'
 
 type MirCanvasTool =
   | 'draw'
@@ -19,5 +20,7 @@ export const useCanvasStore = defineStore('canvas', {
     isEraser: false,
     penOpacity: 100,
     tool: 'draw' as MirCanvasTool,
+    coord: new Coordinate(),
+    anchor: [new Coordinate(), new Coordinate({scroll: new Point(300, 0)})] as [Coordinate, Coordinate]
   }),
 })

@@ -1,8 +1,10 @@
 <template>
   <div ref="el" class="PaintCanvas" />
+  <CanvasOverlay />
 </template>
 
 <script lang="ts" setup>
+import CanvasOverlay from './CanvasOverlay.vue'
 import { onMounted, ref } from 'vue'
 import { useSymPaint } from '../logics/canvas/useSymPaint'
 
