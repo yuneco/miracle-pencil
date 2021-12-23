@@ -8,6 +8,7 @@
         @update:checked="v => isPen = v"
         edge="left"
         icon="pen"
+        label="pen color"
       />
       <CheckItem
         v-model="isEraser"

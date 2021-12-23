@@ -11,6 +11,7 @@
       ref="inp"
       :value="modelValue"
       @input="(ev) => changeColor(ev)"
+      :aria-label="label || ''"
     />
   </div>
 </template>
@@ -20,7 +21,8 @@ import { ref } from 'vue'
 const inp = ref<HTMLElement>()
 
 const props = defineProps<{
-  modelValue: string
+  modelValue: string,
+  label?: string,
 }>()
 
 const emit = defineEmits<{

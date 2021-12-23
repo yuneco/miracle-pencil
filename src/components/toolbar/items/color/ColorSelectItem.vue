@@ -1,7 +1,7 @@
 <template>
   <div class="ColorSelectItem">
     <CheckItem :icon="icon" :edge="edge" v-model="checked">
-      <ColorSelector v-model="color" />
+      <ColorSelector v-model="color" :label="label || icon" />
     </CheckItem>
   </div>
 </template>
@@ -16,6 +16,7 @@ const props = withDefaults(defineProps<{
   checked?: boolean
   icon?: PaletteIconSymbol
   edge?: 'left' | 'right' | 'both' | 'none'
+  label?: string
 }>(),{
   checked: false
 })
