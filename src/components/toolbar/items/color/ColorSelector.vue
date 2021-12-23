@@ -39,7 +39,8 @@ const changeColor = (ev: Event) => {
 <style lang="scss" scoped>
 .ColorSelector {
   position: relative;
-  height: 30px;
+  height: 26px;
+  top: 2px;
   .view {
     position: absolute;
     width: 26px;

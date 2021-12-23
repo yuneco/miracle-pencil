@@ -163,45 +163,23 @@ const init = (parent: HTMLElement) => {
   canvas.value = cv
 }
 
-// TODO: この計算はライブラリ側が行うべき
-const view2canvas = (p: { x: number; y: number }) => {
-  if (!canvas.value) return
-  const vp = new Point(p.x, p.y)
-    .move(new Point(-canvas.value.width / 2, -canvas.value.height / 2))
-    .scale(2)
-  return vp
-}
-
-// TODO: この計算はライブラリ側が行うべき
-const canvas2view = (p: { x: number; y: number }) => {
-  if (!canvas.value) return
-  const cp = new Point(p.x, p.y)
-  return canvas.value
-    .canvas2viewPos(cp, 'current')
-    .scale(0.5)
-    .move(new Point(canvas.value.width / 2, canvas.value.height / 2))
-}
-
-// TODO: アンカーの色はsympaint側にハードコードされてしまっているため、利用側から設定・取得可能にすること
-const ANCHOR_COLOR = ['#91bccc', '#eeaabb']
-
 export const useSymPaint = () => {
   const store = useCanvasStore()
   const hasSubAnchor = computed(() => store.penCount[1] >= 1)
 
   const activeAnchor = computed(() => store.anchor[hasSubAnchor.value ? 1 : 0])
   const activeAnchorColor = computed(
-    () => ANCHOR_COLOR[hasSubAnchor.value ? 1 : 0]
+    () => canvas.value?.anchorColor[hasSubAnchor.value ? 1 : 0] ?? '#888'
   )
-  const activeAnchorPos = computed(() => canvas2view(activeAnchor.value.scroll))
+  const activeAnchorPos = computed(() => canvas.value?.canvas2displayPos(activeAnchor.value.scroll, 'current'))
 
   return {
     state: store,
     init: (parent: HTMLElement) => init(parent),
     toImgBlob: () => canvas.value?.toImgBlob(),
     undo: () => canvas.value?.undo(),
-    view2canvas,
-    canvas2view,
+    view2canvas: (p: { x: number; y: number }) => canvas.value?.display2canvasPos(new Point(p.x, p.y), 'current'),
+    canvas2view: (p: { x: number; y: number }) => canvas.value?.canvas2displayPos(new Point(p.x, p.y), 'current'),
     activeAnchor,
     activeAnchorColor,
     activeAnchorPos,
