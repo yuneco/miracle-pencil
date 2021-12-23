@@ -96,7 +96,8 @@ const close = () => {
     display: inline-flex;
     user-select: none;
     font-size: 13px;
-    padding-right: 4px;
+    padding-left: 2px;
+    padding-right: 6px;
     align-items: center;
   }
   .bar {
@@ -104,6 +105,8 @@ const close = () => {
     width: 120px;
     height: 24px;
     border: 1px solid gray;
+    border-radius: 3px;
+    overflow: hidden;
     .fill {
       position: relative;
       width: 100%;

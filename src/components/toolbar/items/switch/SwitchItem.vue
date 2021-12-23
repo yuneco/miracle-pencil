@@ -127,7 +127,7 @@ const changeList = (v: SwitchOption['key']) => {
   .list {
     position: absolute;
     z-index: 1;
-    top: 39px;
+    top: 42px;
     left: 0;
     transform: translateX(-50%);
     filter: drop-shadow(0 0 8px #00000066);

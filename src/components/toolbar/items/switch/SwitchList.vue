@@ -53,6 +53,7 @@ const onselect = async (key: SwitchOption['key']) => {
 
   .label {
     font-size: 13px;
+    padding-left: 2px;
     padding-right: 4px;
   }
   .list {

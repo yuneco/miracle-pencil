@@ -6,6 +6,7 @@
     }"
     :class="{ PaletteItem__disabled: disabled, PaletteItem__checked: checked, PaletteItem__flash: isFlashing }"
     @pointerdown="check"
+    :aria-label="label || icon || ''"
   >
     <span class="icon" v-if="icon">
       <PaletteIcon :symbol="icon" />

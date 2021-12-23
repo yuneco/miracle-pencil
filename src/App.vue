@@ -35,6 +35,7 @@ import Toast from './components/common/Toast.vue';
     z-index: 1;
     width: 100%;
     touch-action: none;
+    pointer-events: none;
   }
   .sidetoolbar {
     position: absolute;
@@ -43,6 +44,7 @@ import Toast from './components/common/Toast.vue';
     height: 100%;
     right: 0;
     touch-action: none;
+    pointer-events: none;
   }
   .canvas {
     position: absolute;

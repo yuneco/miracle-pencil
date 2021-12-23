@@ -128,7 +128,7 @@ const changeValue = (v: number) => {
   .slider {
     position: absolute;
     z-index: 1;
-    top: 39px;
+    top: 42px;
     left: 60px;
     transform: translateX(-50%);
     filter: drop-shadow(0 0 8px #00000066);
