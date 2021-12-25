@@ -10,7 +10,7 @@ const canvasState = reactive({
   enableUndo: false,
 })
 const updateCanvasState = () => {
-  canvasState.enableUndo = canvas.value?.enableUndo ?? false
+  canvasState.enableUndo = (canvas.value?.historyCount ?? 0) > 0
 }
 
 const onKeydown = (ev: KeyboardEvent) => {
