@@ -1,10 +1,17 @@
 import { PaintCanvas, Coordinate, utils, Point } from 'sym-paint'
-import { computed, ref, watch } from 'vue'
+import { computed, reactive, ref, watch } from 'vue'
 import { useCanvasStore } from '../../stores/CanvasStore'
 import { usePenCount } from './usePenCount'
 
 const canvas = ref<PaintCanvas | undefined>()
 const penCount = ref<ReturnType<typeof usePenCount>>()
+const canvasState = reactive({
+  /** Undo可能か？ */
+  enableUndo: false,
+})
+const updateCanvasState = () => {
+  canvasState.enableUndo = canvas.value?.enableUndo ?? false
+}
 
 const onKeydown = (ev: KeyboardEvent) => {
   if (ev.key === 'ArrowUp') {
@@ -37,6 +44,7 @@ const init = (parent: HTMLElement) => {
   cv.penKind = store.isEraser ? 'eraser' : 'normal'
   cv.anchor = store.anchor[0] as Coordinate
   cv.childAnchor = store.anchor[1] as Coordinate
+  cv.enableCapture = false //スタンプ機能は当面使用しない
 
   // キャンバスからの変更要求を受け取りパレットの設定を変更
   cv.listenRequestZoom((scale) => {
@@ -49,7 +57,6 @@ const init = (parent: HTMLElement) => {
     if (target === 'anchor') {
       const index = cv.hasSubPen ? 1 : 0
       store.anchor[index] = cv.activeAnchor.clone({ scroll: point })
-      // cv.activeAnchor = cv.activeAnchor.clone({ scroll: point })
     }
   })
   cv.listenRequestRotateTo(({ angle, target }) => {
@@ -59,11 +66,11 @@ const init = (parent: HTMLElement) => {
     if (target === 'anchor') {
       const index = cv.hasSubPen ? 1 : 0
       store.anchor[index] = cv.activeAnchor.clone({ angle })
-      // cv.activeAnchor = cv.activeAnchor.clone({ angle })
     }
   })
   cv.listenRequestUndo(() => {
     cv.undo()
+    updateCanvasState()
   })
   cv.listenRequestAnchorTransform((coord) => {
     cv.activeAnchor = coord
@@ -71,11 +78,14 @@ const init = (parent: HTMLElement) => {
   cv.listenRequestAnchorReset(() => {
     cv.anchor = new Coordinate()
   })
+  cv.listenStrokeEnd(() => {
+    updateCanvasState()
+  })
 
   const toolKeyWatcher = new utils.ToolKeyWatcher()
   toolKeyWatcher.listenChange((tool) => {
     if (tool === 'draw' || tool === 'draw:stamp') {
-      // stampは現時点ではサポートしないため、通常のペンツールとして扱う
+      // タスンプは現時点ではサポートしないため、通常のペンツールとして扱う
       store.tool = 'draw'
       store.isStraight = false
       return
@@ -160,28 +170,54 @@ const init = (parent: HTMLElement) => {
       cv.childAnchor = store.anchor[1] as Coordinate
     }
   )
+
   canvas.value = cv
+
+  // キャンバス状態の算出プロパティ
+  const hasSubAnchor = computed(() => store.penCount[1] >= 1)
+  const activeAnchor = computed(() => store.anchor[hasSubAnchor.value ? 1 : 0])
+  const activeAnchorColor = computed(
+    () => cv.anchorColor[hasSubAnchor.value ? 1 : 0]
+  )
+  const activeAnchorPos = computed(() =>
+    cv.canvas2displayPos(activeAnchor.value.scroll, 'current')
+  )
+  const enableUndo = computed(() => canvasState.enableUndo)
+
+  return {
+    hasSubAnchor,
+    activeAnchor,
+    activeAnchorColor,
+    activeAnchorPos,
+    enableUndo,
+  }
 }
 
 export const useSymPaint = () => {
   const store = useCanvasStore()
-  const hasSubAnchor = computed(() => store.penCount[1] >= 1)
 
-  const activeAnchor = computed(() => store.anchor[hasSubAnchor.value ? 1 : 0])
-  const activeAnchorColor = computed(
-    () => canvas.value?.anchorColor[hasSubAnchor.value ? 1 : 0] ?? '#888'
-  )
-  const activeAnchorPos = computed(() => canvas.value?.canvas2displayPos(activeAnchor.value.scroll, 'current'))
+  let getters: ReturnType<typeof init> | undefined
+  const initCanvas = (parent: HTMLElement) => {
+    getters = init(parent)
+    updateCanvasState()
+  }
 
   return {
     state: store,
-    init: (parent: HTMLElement) => init(parent),
+    init: initCanvas,
     toImgBlob: () => canvas.value?.toImgBlob(),
-    undo: () => canvas.value?.undo(),
-    view2canvas: (p: { x: number; y: number }) => canvas.value?.display2canvasPos(new Point(p.x, p.y), 'current'),
-    canvas2view: (p: { x: number; y: number }) => canvas.value?.canvas2displayPos(new Point(p.x, p.y), 'current'),
-    activeAnchor,
-    activeAnchorColor,
-    activeAnchorPos,
+    undo: () => {
+      canvas.value?.undo()
+      updateCanvasState()
+    },
+    view2canvas: (p: { x: number; y: number }) =>
+      canvas.value?.display2canvasPos(new Point(p.x, p.y), 'current'),
+    canvas2view: (p: { x: number; y: number }) =>
+      canvas.value?.canvas2displayPos(new Point(p.x, p.y), 'current'),
+    activeAnchor: computed(() => getters?.activeAnchor.value),
+    activeAnchorColor: computed(() => getters?.activeAnchorColor.value),
+    activeAnchorPos: computed(() => getters?.activeAnchorPos.value),
+    enableUndo: computed(() => canvasState.enableUndo),
+    inited: computed(() => !!canvas.value),
   }
 }

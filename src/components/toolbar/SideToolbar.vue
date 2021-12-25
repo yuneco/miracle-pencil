@@ -3,7 +3,7 @@
   <CheckItem v-model="isAnchorRotateTool" icon="rotate" cornerStyle="round" />
   <CheckItem v-model="isAnchorMoveTool" icon="move" cornerStyle="round" />
   <div class="undo">
-    <PaletteItem @check="undo" icon="undo" label="" cornerStyle="round" />
+    <PaletteItem @check="undo" icon="undo" label="" :disabled="!enableUndo" cornerStyle="round" />
   </div>
 </div>
 </template>
@@ -13,7 +13,7 @@ import { computed } from 'vue';
 import { useSymPaint } from '../../logics/canvas/useSymPaint';
 import CheckItem from './items/CheckItem.vue'
 import PaletteItem from './items/PaletteItem.vue'
-const {state: store, undo} = useSymPaint()
+const {state: store, undo, enableUndo} = useSymPaint()
 
 const isAnchorRotateTool = computed({
   set: (v: boolean) => {
