@@ -9,7 +9,7 @@
 import { computed } from 'vue';
 import { useAppStore } from '../../stores/AppStore';
 import ExportDialog from './ExportDialog.vue';
-import StartDialog from './StartDialog.vue';
+import StartDialog from './StartDialog/StartDialog.vue';
 import Modal from '../common/Modal.vue';
 
 const store = useAppStore()

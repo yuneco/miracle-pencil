@@ -11,6 +11,7 @@ const canvasState = reactive({
 })
 const updateCanvasState = () => {
   canvasState.enableUndo = (canvas.value?.historyCount ?? 0) > 0
+  console.log(canvas.value)
 }
 
 const onKeydown = (ev: KeyboardEvent) => {
@@ -172,35 +173,26 @@ const init = (parent: HTMLElement) => {
   )
 
   canvas.value = cv
-
-  // キャンバス状態の算出プロパティ
-  const hasSubAnchor = computed(() => store.penCount[1] >= 1)
-  const activeAnchor = computed(() => store.anchor[hasSubAnchor.value ? 1 : 0])
-  const activeAnchorColor = computed(
-    () => cv.anchorColor[hasSubAnchor.value ? 1 : 0]
-  )
-  const activeAnchorPos = computed(() =>
-    cv.canvas2displayPos(activeAnchor.value.scroll, 'current')
-  )
-  const enableUndo = computed(() => canvasState.enableUndo)
-
-  return {
-    hasSubAnchor,
-    activeAnchor,
-    activeAnchorColor,
-    activeAnchorPos,
-    enableUndo,
-  }
 }
 
 export const useSymPaint = () => {
   const store = useCanvasStore()
 
-  let getters: ReturnType<typeof init> | undefined
   const initCanvas = (parent: HTMLElement) => {
-    getters = init(parent)
+    init(parent)
     updateCanvasState()
   }
+
+  // キャンバス状態の算出プロパティ
+  const hasSubAnchor = computed(() => store.penCount[1] >= 1)
+  const activeAnchor = computed(() => store.anchor[hasSubAnchor.value ? 1 : 0])
+  const activeAnchorColor = computed(
+    () => canvas.value?.anchorColor[hasSubAnchor.value ? 1 : 0]
+  )
+  const activeAnchorPos = computed(() =>
+    canvas.value?.canvas2displayPos(activeAnchor.value.scroll, 'current')
+  )
+  const enableUndo = computed(() => canvasState.enableUndo)
 
   return {
     state: store,
@@ -214,10 +206,10 @@ export const useSymPaint = () => {
       canvas.value?.display2canvasPos(new Point(p.x, p.y), 'current'),
     canvas2view: (p: { x: number; y: number }) =>
       canvas.value?.canvas2displayPos(new Point(p.x, p.y), 'current'),
-    activeAnchor: computed(() => getters?.activeAnchor.value),
-    activeAnchorColor: computed(() => getters?.activeAnchorColor.value),
-    activeAnchorPos: computed(() => getters?.activeAnchorPos.value),
-    enableUndo: computed(() => canvasState.enableUndo),
     inited: computed(() => !!canvas.value),
+    activeAnchor,
+    activeAnchorColor,
+    activeAnchorPos,
+    enableUndo,
   }
 }

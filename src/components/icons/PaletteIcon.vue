@@ -140,7 +140,7 @@ const props = withDefaults(
     color?: string
   }>(),
   {
-    color: '#444',
+    color: '#445054',
   }
 )
 </script>
