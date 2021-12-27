@@ -38,7 +38,7 @@ const hasContent = computed(() => {
     height: 100vh;
     background-color: #00000044;
     backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    // -webkit-backdrop-filter: blur(8px);
     opacity: 1;
   }
   .content {
