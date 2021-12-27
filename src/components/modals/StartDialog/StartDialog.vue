@@ -38,8 +38,8 @@ const emit = defineEmits<{
 
 <style lang="scss" scoped>
 .StartDialog {
-  min-width: 50vw;
-  max-width: 90vw;
+  width: min(90vw, 640px);
+  height: min(80vh, 480px);
   .close {
     position: absolute;
     top: 4px;

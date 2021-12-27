@@ -11,7 +11,6 @@ const canvasState = reactive({
 })
 const updateCanvasState = () => {
   canvasState.enableUndo = (canvas.value?.historyCount ?? 0) > 0
-  console.log(canvas.value)
 }
 
 const onKeydown = (ev: KeyboardEvent) => {
@@ -49,24 +48,24 @@ const init = (parent: HTMLElement) => {
 
   // キャンバスからの変更要求を受け取りパレットの設定を変更
   cv.listenRequestZoom((scale) => {
-    store.coord = cv.coord.clone({ scale })
+    store.coord = store.coord.clone({ scale })
   })
   cv.listenRequestScrollTo(({ point, target }) => {
     if (target === 'canvas') {
-      store.coord = cv.coord.clone({ scroll: point })
+      store.coord = store.coord.clone({ scroll: point })
     }
     if (target === 'anchor') {
       const index = cv.hasSubPen ? 1 : 0
-      store.anchor[index] = cv.activeAnchor.clone({ scroll: point })
+      store.anchor[index] = store.anchor[index].clone({ scroll: point })
     }
   })
   cv.listenRequestRotateTo(({ angle, target }) => {
     if (target === 'canvas') {
-      store.coord = cv.coord.clone({ angle })
+      store.coord = store.coord.clone({ angle })
     }
     if (target === 'anchor') {
       const index = cv.hasSubPen ? 1 : 0
-      store.anchor[index] = cv.activeAnchor.clone({ angle })
+      store.anchor[index] = store.anchor[index].clone({ angle })
     }
   })
   cv.listenRequestUndo(() => {
