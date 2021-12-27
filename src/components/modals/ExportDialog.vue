@@ -4,28 +4,36 @@
       <div class="close">
         <CloseButton @click="emit('close')" />
       </div>
-      <div class="title">
-        Export Image
-      </div>
+      <div class="title">Export Image</div>
       <div class="images">
-        <div class="image">
+        <div class="image" :class="{ selected: state.selected === 'original' }">
+          <div class="title">Original</div>
           <img
-            v-if="state.imgSrc"
-            :src="state.imgSrc"
-            :style="imgStyle"
-            :class="{ selected: state.selected === 'img' }"
-            ref="imgRef"
-            @click="state.selected = 'img'"
+            v-if="imgs.original"
+            :src="imgs.original.src"
+            :style="originalStyle"
+            ref="originalImgRef"
+            @click="state.selected = 'original'"
           />
         </div>
-        <div class="image">
+        <div class="image" :class="{ selected: state.selected === 'cropped' }">
+          <div class="title">Cropped</div>
           <img
-            v-if="state.croppedImgSrc"
-            :src="state.croppedImgSrc"
+            v-if="imgs.cropped"
+            :src="imgs.cropped.src"
             :style="croppedImgStyle"
-            :class="{ selected: state.selected === 'croppedImg' }"
             ref="croppedImgRef"
-            @click="state.selected = 'croppedImg'"
+            @click="state.selected = 'cropped'"
+          />
+        </div>
+        <div class="image" :class="{ selected: state.selected === 'texture' }">
+          <div class="title">Texture</div>
+          <img
+            v-if="imgs.texture"
+            :src="imgs.texture.src"
+            :style="textureImgStyle"
+            ref="textureImgRef"
+            @click="state.selected = 'texture'"
           />
         </div>
       </div>
@@ -40,66 +48,60 @@
 <script lang="ts" setup>
 import CloseButton from '../common/CloseButton.vue'
 import PlaneBox from '../common/PlaneBox.vue'
-import { useSymPaint } from '../../logics/canvas/useSymPaint'
 import { copyImgToClipboard } from '../../logics/graphics/copyToClipboard'
-import { computed, reactive, ref } from 'vue'
-import { blobToImg } from '../../logics/graphics/blobToImg'
-import { cropImg } from '../../logics/graphics/cropImg'
+import { computed, reactive, Ref, ref } from 'vue'
 import { imgToBlob } from '../../logics/graphics/imgToBlob'
 import { shareImage } from '../../logics/graphics/shareImg'
 import PureButton from '../common/PureButton.vue'
 import { useAppStore } from '../../stores/AppStore'
 import { theme } from '../consts/theme'
+import { ExportImgKind, useExportImgs } from '../../logics/canvas/useExportImgs'
 
 const IMG_BOX_SIZE = 240
 const appStore = useAppStore()
 type State = {
-  imgSrc: string
-  imgSize: { w: number; h: number }
-  croppedImgSrc: string
-  croppedImgSize: { w: number; h: number }
-  selected: 'img' | 'croppedImg' | undefined
+  selected: ExportImgKind | undefined
 }
 
 const emit = defineEmits<{
   (e: 'close'): void
 }>()
 
-const { toImgBlob } = useSymPaint()
 const state = reactive<State>({
-  imgSrc: '',
-  imgSize: { w: 0, h: 0 },
-  croppedImgSrc: '',
-  croppedImgSize: { w: 0, h: 0 },
   selected: undefined,
 })
+const { imgs, create } = useExportImgs()
 
-const imgRef = ref<HTMLImageElement>()
+const originalImgRef = ref<HTMLImageElement>()
 const croppedImgRef = ref<HTMLImageElement>()
+const textureImgRef = ref<HTMLImageElement>()
+
+const imgRefs: { [k in ExportImgKind]: Ref<HTMLImageElement | undefined> } = {
+  original: originalImgRef,
+  cropped: croppedImgRef,
+  texture: textureImgRef,
+}
+
 const isShowShare = !!navigator.share
 
-const imgStyle = computed(() => {
-  const scale =
-    IMG_BOX_SIZE / Math.max(state.imgSize.w, state.imgSize.h, IMG_BOX_SIZE)
+const getImgStyle = (kind: ExportImgKind) => {
+  const info = imgs[kind]
+  if (!info) return {}
+  const { w, h } = info.size
+  const scale = IMG_BOX_SIZE / Math.max(w, h, IMG_BOX_SIZE)
   return {
-    width: `${state.imgSize.w * scale}px`,
-    height: `${state.imgSize.h * scale}px`,
+    width: `${w * scale}px`,
+    height: `${h * scale}px`,
+    backgroundColor: kind === 'texture' ? '#000' : '#fff',
   }
-})
+}
 
-const croppedImgStyle = computed(() => {
-  const scale =
-    IMG_BOX_SIZE /
-    Math.max(state.croppedImgSize.w, state.croppedImgSize.h, IMG_BOX_SIZE)
-  return {
-    width: `${state.croppedImgSize.w * scale}px`,
-    height: `${state.croppedImgSize.h * scale}px`,
-  }
-})
+const originalStyle = computed(() => getImgStyle('original'))
+const croppedImgStyle = computed(() => getImgStyle('cropped'))
+const textureImgStyle = computed(() => getImgStyle('texture'))
 
 const selectedImg = computed(() => {
-  if (!state.selected) return
-  return state.selected === 'img' ? imgRef.value : croppedImgRef.value
+  return state.selected ? imgRefs[state.selected].value : undefined
 })
 
 const copy = async () => {
@@ -115,21 +117,7 @@ const share = async () => {
   await shareImage(blob)
 }
 
-const loadImg = async () => {
-  const blob = await toImgBlob()
-  if (!blob) return
-  const img = await blobToImg(blob)
-  state.imgSize.w = img.naturalWidth
-  state.imgSize.h = img.naturalHeight
-  state.imgSrc = img.src
-  state.selected = 'img'
-  const cropped = await cropImg(img)
-  if (!cropped) return
-  state.croppedImgSize.w = cropped.naturalWidth
-  state.croppedImgSize.h = cropped.naturalHeight
-  state.croppedImgSrc = cropped.src
-}
-loadImg()
+create()
 </script>
 
 <style lang="scss" scoped>
@@ -152,16 +140,18 @@ loadImg()
     overflow-x: scroll;
     .image {
       width: 240px;
-      height: 240px;
+      height: 300px;
       display: flex;
+      flex-direction: column;
       align-items: center;
-      justify-content: center;
-      img {
-        border: 2px solid #ddd;
-        box-shadow: 0 0 8px #00000011;
+      justify-content: flex-start;
+      padding: 8px;
+      border-radius: 4px;
         &.selected {
-          border: 2px solid v-bind('theme.themeColor');
+          background-color: v-bind('theme.themeLight');
         }
+      img {
+        box-shadow: 0 0 8px #00000033;
       }
     }
   }

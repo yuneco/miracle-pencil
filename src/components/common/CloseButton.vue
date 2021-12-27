@@ -7,8 +7,8 @@
 <script lang="ts" setup>
 const props = withDefaults(
   defineProps<{
-    foreColor: string
-    bgColor: string
+    foreColor?: string
+    bgColor?: string
   }>(),
   { foreColor: '#999', bgColor: '#fff' }
 )

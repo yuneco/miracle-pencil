@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 const props = withDefaults(defineProps<{
-  backgroundColor: string
+  backgroundColor?: string
 }>(),{
   backgroundColor: '#fff'
 })
