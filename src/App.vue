@@ -5,6 +5,7 @@ import Toolbar from './components/toolbar/Toolbar.vue'
 import SideToolbar from './components/toolbar/SideToolbar.vue'
 import Modals from './components/modals/Modals.vue';
 import Toast from './components/common/Toast.vue';
+import ConfirmBox from './components/common/ConfirmBox.vue';
 
 </script>
 
@@ -23,6 +24,9 @@ import Toast from './components/common/Toast.vue';
   </div>
   <div class="toast">
     <Toast />
+  </div>
+  <div class="confirm">
+    <ConfirmBox />
   </div>
 </template>
 
