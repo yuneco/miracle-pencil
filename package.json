@@ -13,7 +13,7 @@
     "vue": "^3.2.16"
   },
   "devDependencies": {
-    "@types/google.analytics": "^0.0.42",
+    "@types/gtag.js": "^0.0.8",
     "@types/node": "^16.11.10",
     "@typescript-eslint/eslint-plugin": "^5.6.0",
     "@typescript-eslint/parser": "^5.6.0",

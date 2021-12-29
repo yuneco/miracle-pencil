@@ -43,7 +43,7 @@ type CustomErrorEvent = {
 type EventEntry = ToolEvent | ModalEvent | ExportEvent | PaintActionEvent | CustomErrorEvent | ToolSettingOnOffEvent
 
 export const logEvent = (ent: EventEntry) => {
-  ga("send", "event", {eventCategoy: ent.category, eventAction: ent.action, eventValue: ent.value})
+  gtag("event", ent.action, {event_categoy: ent.category, event_action: ent.action, event_label: ent.value})
   console.log(ent)
 }
 
