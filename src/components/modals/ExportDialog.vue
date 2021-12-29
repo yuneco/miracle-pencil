@@ -54,7 +54,7 @@ import { imgToBlob } from '../../logics/graphics/imgToBlob'
 import { shareImage } from '../../logics/graphics/shareImg'
 import PureButton from '../common/PureButton.vue'
 import { useAppStore } from '../../stores/AppStore'
-import { theme } from '../consts/theme'
+import { theme } from '../../consts/theme'
 import { ExportImgKind, useExportImgs } from '../../logics/canvas/useExportImgs'
 
 const IMG_BOX_SIZE = 240

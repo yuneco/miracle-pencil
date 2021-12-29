@@ -23,7 +23,7 @@
 import { computed, onUnmounted, reactive } from 'vue'
 import { constraint, stepValue } from '../../../../logics/utils/mathUtil'
 import { sleep } from '../../../../logics/utils/sleep'
-import { theme } from '../../../consts/theme'
+import { theme } from '../../../../consts/theme'
 
 const BAR_WIDTH = 120
 

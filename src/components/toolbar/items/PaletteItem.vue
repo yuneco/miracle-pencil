@@ -21,7 +21,7 @@ import { computed, ref } from 'vue'
 import { sleep } from '../../../logics/utils/sleep'
 import PaletteIcon from '../../icons/PaletteIcon.vue'
 import { PaletteIconSymbol } from '../../icons/PaletteIconSymbol'
-import { theme } from '../../consts/theme';
+import { theme } from '../../../consts/theme';
 
 const props = withDefaults(
   defineProps<{

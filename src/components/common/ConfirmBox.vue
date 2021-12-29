@@ -25,7 +25,7 @@
 import PureButton from './PureButton.vue'
 import { useConfirmStore } from '../../stores/ConfirmStore'
 import { computed } from 'vue'
-import { theme } from '../consts/theme'
+import { theme } from '../../consts/theme'
 
 const store = useConfirmStore()
 const content = computed(() => store.$state.content)

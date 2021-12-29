@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts" setup>
-import { theme } from '../consts/theme';
+import { theme } from '../../consts/theme';
 
 const props = withDefaults(defineProps<{
   size?: number,

@@ -27,7 +27,7 @@ import PlaneBox from '../../common/PlaneBox.vue'
 import PureButton from '../../common/PureButton.vue'
 import IntroTutorial from './IntroTutorial.vue'
 import { useAppStore } from '../../../stores/AppStore'
-import { theme } from '../../consts/theme'
+import { theme } from '../../../consts/theme'
 
 const appStore = useAppStore()
 

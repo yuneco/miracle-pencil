@@ -8,7 +8,7 @@ const props = withDefaults(defineProps<{
 }>(), {
   color: theme.themeDark
 })
-import { theme } from '../consts/theme';
+import { theme } from '../../consts/theme';
 
 </script>
 
