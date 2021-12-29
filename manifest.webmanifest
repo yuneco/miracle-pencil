@@ -1,1 +1,1 @@
-{"name":"flower-paint","short_name":"flower-paint","start_url":"./","display":"standalone","background_color":"#ffffff","lang":"en","scope":"./"}
+{"name":"Miracle Pencil","short_name":"flower-paint","start_url":"./","display":"standalone","background_color":"#ffffff","lang":"en","scope":"./","icons":[{"src":"favicon.svg","sizes":"any","type":"image/svg+xml","purpose":"any"}],"theme_color":"rgb(170 190 195)"}
