@@ -1,1 +1,1 @@
-{"name":"Miracle Pencil","short_name":"miracle-pencil","start_url":"./","display":"standalone","background_color":"#ffffff","lang":"en","scope":"./","icons":[{"src":"favicon.svg","sizes":"any","type":"image/svg+xml","purpose":"any"}],"theme_color":"rgb(170 190 195)"}
+{"name":"Miracle Pencil","short_name":"miracle-pencil","start_url":"./","display":"standalone","background_color":"#ffffff","lang":"en","scope":"./","icons":[{"src":"favicon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}],"theme_color":"rgb(170 190 195)"}
