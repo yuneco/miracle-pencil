@@ -57,7 +57,7 @@ import { useAppStore } from '../../stores/AppStore'
 import { theme } from '../../consts/theme'
 import { ExportImgKind, useExportImgs } from '../../logics/canvas/useExportImgs'
 
-const IMG_BOX_SIZE = 240
+const IMG_BOX_SIZE = 220
 const appStore = useAppStore()
 type State = {
   selected: ExportImgKind | undefined
