@@ -16,3 +16,4 @@ export type PaletteIconSymbol =
   | 'undo'
   | 'redo'
   | 'trash'
+  | 'info'

@@ -11,10 +11,26 @@
       <div class="content">
         <div class="title">Miracle Pencil</div>
         <div class="body">
-          <IntroTutorial />
+          <dl>
+            <div class="item">
+              <dd>Version</dd>
+              <dt>{{INFO.VERSION}}</dt>
+            </div>
+            <div class="item">
+              <dd>Release</dd>
+              <dt>{{INFO.RELEASE_DATE}}</dt>
+            </div>
+            <div class="item">
+              <dd>Made by</dd>
+              <dt><a :href="INFO.AUTHOR_TW" target="blank" rel="noopener">{{INFO.AUTHOR}}</a></dt>
+            </div>
+          </dl>
+          <div class="repo">
+            See <a :href="INFO.REPOSITORY" target="blank" rel="noopener">GitHub repository</a> for more information.
+          </div>
         </div>
         <div class="buttons">
-          <PureButton @click="emit('close')">START</PureButton>
+          <PureButton @click="emit('close')">OK</PureButton>
         </div>
       </div>
     </PlaneBox>
@@ -25,11 +41,8 @@
 import CloseButton from '../../common/CloseButton.vue'
 import PlaneBox from '../../common/PlaneBox.vue'
 import PureButton from '../../common/PureButton.vue'
-import IntroTutorial from './IntroTutorial.vue'
-import { useAppStore } from '../../../stores/AppStore'
 import { theme } from '../../../consts/theme'
-
-const appStore = useAppStore()
+import *  as INFO from '../../../consts/appInfo'
 
 const emit = defineEmits<{
   (e: 'close'): void
@@ -53,9 +66,29 @@ const emit = defineEmits<{
       font-weight: bold;
       color: #fff;
       padding-bottom: 16px;
+      padding-top: 16px;
+      font-size: 3vw;
+      letter-spacing: 0.25vw;
+      text-align: center;
     }
     .body {
+      padding-top: 24px;
       color: #fff;
+      .item {
+        display: flex;
+        gap: 16px;
+        dd {
+          width: 30%;
+          text-align: right;
+          font-weight: bold;
+        }
+      }
+      .repo {
+        text-align: center;
+      }
+      a {
+        color: rgb(253, 220, 113);
+      }
     }
     .buttons {
       display: flex;

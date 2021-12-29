@@ -54,10 +54,10 @@ const color = computed(() =>
     -webkit-backdrop-filter: blur(8px);
   }
   .content {
-    width: min(300px, 50vw);
+    width: min(400px, 60vw);
     min-height: 100px;
     background-color: #fff;
-    padding: 12px 24px;
+    padding: 16px 24px;
     border-radius: 4px;
     display: flex;
     flex-direction: column;
@@ -68,6 +68,7 @@ const color = computed(() =>
       justify-content: center;
       align-items: center;
       gap: 12px;
+      padding-top: 12px;
     }
   }
 }

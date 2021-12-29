@@ -20,7 +20,17 @@
         cornerStyle="round"
       />
     </div>
-  </div>
+
+    <div class="info">
+      <PaletteItem
+        @check="info"
+        icon="info"
+        label=""
+        cornerStyle="round"
+      />
+    </div>
+
+</div>
 </template>
 
 <script lang="ts" setup>
@@ -29,9 +39,11 @@ import { useSymPaint } from '../../logics/canvas/useSymPaint'
 import CheckItem from './items/CheckItem.vue'
 import PaletteItem from './items/PaletteItem.vue'
 import { useConfirmStore } from '../../stores/ConfirmStore'
+import { useAppStore } from '../../stores/AppStore'
 
 const { state: store, clear, undo, enableUndo } = useSymPaint()
 const { confirm } = useConfirmStore()
+const appStore = useAppStore()
 
 const isAnchorRotateTool = computed({
   set: (v: boolean) => {
@@ -57,7 +69,7 @@ const isAnchorMoveTool = computed({
 
 const confirmAndClear = async () => {
   const answer = await confirm(
-    'Are you sure you want to clear all the canvas?',
+    'Are you sure you want to clear all the canvas? This operation can not undo.',
     'CLEAR',
     'not clear',
     'danger'
@@ -66,6 +78,10 @@ const confirmAndClear = async () => {
     clear()
   }
 }
+
+const info = () => {
+  appStore.modal = 'start'
+}
 </script>
 
 <style lang="scss" scoped>
@@ -73,7 +89,7 @@ const confirmAndClear = async () => {
   position: absolute;
   width: 100%;
   height: 80%;
-  bottom: 20%;
+  bottom: 12px;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -95,6 +111,9 @@ const confirmAndClear = async () => {
   }
   .clear {
     padding-top: 12px;
+  }
+  .info {
+    padding-top: 20vh;
   }
 }
 </style>
