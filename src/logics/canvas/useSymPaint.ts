@@ -1,7 +1,7 @@
 import { PaintCanvas, Coordinate, utils, Point } from 'sym-paint'
 import { computed, reactive, ref, watch } from 'vue'
 import { useCanvasStore } from '../../stores/CanvasStore'
-import { logEvent, logPaintEvent, logToolEvent, logToolSettingEvent } from '../analytics/logEvent'
+import { logCustomErrorEvent, logEvent, logPaintEvent, logToolEvent, logToolSettingEvent } from '../analytics/logEvent'
 import { usePenCount } from './usePenCount'
 
 const canvas = ref<PaintCanvas | undefined>()
@@ -23,6 +23,7 @@ const onKeydown = (ev: KeyboardEvent) => {
   }
   if (ev.key === 'z' && ev.metaKey) {
     canvas.value?.undo()
+    logPaintEvent('undo')
   }
 }
 window.removeEventListener('keydown', onKeydown)
@@ -34,6 +35,7 @@ const init = (parent: HTMLElement) => {
   const isAlreadyInited = !!canvas.value
   if (isAlreadyInited) {
     console.warn('SymPaint init called multiple times.')
+    logCustomErrorEvent('useSymPaint', 'init duplicated')
   }
 
   const cv = new PaintCanvas(parent, parent.offsetWidth, parent.offsetHeight)
