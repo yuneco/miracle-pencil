@@ -1,19 +1,37 @@
 <template>
-<div class="SideToolbar">
-  <CheckItem v-model="isAnchorRotateTool" icon="rotate" cornerStyle="round" />
-  <CheckItem v-model="isAnchorMoveTool" icon="move" cornerStyle="round" />
-  <div class="undo">
-    <PaletteItem @check="undo" icon="undo" label="" :disabled="!enableUndo" cornerStyle="round" />
+  <div class="SideToolbar">
+    <CheckItem v-model="isAnchorRotateTool" icon="rotate" cornerStyle="round" />
+    <CheckItem v-model="isAnchorMoveTool" icon="move" cornerStyle="round" />
+    <div class="clear">
+      <PaletteItem
+        @check="confirmAndClear"
+        icon="trash"
+        label=""
+        :disabled="!enableUndo"
+        cornerStyle="round"
+      />
+    </div>
+    <div class="undo">
+      <PaletteItem
+        @check="undo"
+        icon="undo"
+        label=""
+        :disabled="!enableUndo"
+        cornerStyle="round"
+      />
+    </div>
   </div>
-</div>
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue';
-import { useSymPaint } from '../../logics/canvas/useSymPaint';
+import { computed } from 'vue'
+import { useSymPaint } from '../../logics/canvas/useSymPaint'
 import CheckItem from './items/CheckItem.vue'
 import PaletteItem from './items/PaletteItem.vue'
-const {state: store, undo, enableUndo} = useSymPaint()
+import { useConfirmStore } from '../../stores/ConfirmStore'
+
+const { state: store, clear, undo, enableUndo } = useSymPaint()
+const { confirm } = useConfirmStore()
 
 const isAnchorRotateTool = computed({
   set: (v: boolean) => {
@@ -23,7 +41,7 @@ const isAnchorRotateTool = computed({
       store.tool = 'draw'
     }
   },
-  get: () => store.tool === 'rotate:anchor'
+  get: () => store.tool === 'rotate:anchor',
 })
 
 const isAnchorMoveTool = computed({
@@ -34,9 +52,20 @@ const isAnchorMoveTool = computed({
       store.tool = 'draw'
     }
   },
-  get: () => store.tool === 'scroll:anchor'
+  get: () => store.tool === 'scroll:anchor',
 })
 
+const confirmAndClear = async () => {
+  const answer = await confirm(
+    'Are you sure you want to clear all the canvas?',
+    'CLEAR',
+    'not clear',
+    'danger'
+  )
+  if (answer === 'yes') {
+    clear()
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -64,6 +93,8 @@ const isAnchorMoveTool = computed({
   .undo {
     padding-top: 12px;
   }
-
+  .clear {
+    padding-top: 12px;
+  }
 }
 </style>

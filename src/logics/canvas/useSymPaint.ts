@@ -197,6 +197,13 @@ export const useSymPaint = () => {
     state: store,
     init: initCanvas,
     toImgBlob: () => canvas.value?.toImgBlob(),
+    clear: () => {
+      canvas.value?.clear(true)
+      store.coord = new Coordinate()
+      store.anchor = [new Coordinate(), new Coordinate({scroll: new Point(300, 0)})]
+      store.penCount = [store.penCount[0], 0]
+      updateCanvasState()
+    },
     undo: () => {
       canvas.value?.undo()
       updateCanvasState()

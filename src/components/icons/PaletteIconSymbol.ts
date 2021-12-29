@@ -15,3 +15,4 @@ export type PaletteIconSymbol =
   | 'rotate'
   | 'undo'
   | 'redo'
+  | 'trash'
