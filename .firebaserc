@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "miracle-pencil"
+  },
+  "targets": {
+    "miracle-pencil": {
+      "hosting": {
+        "release": [
+          "mirape"
+        ]
+      }
+    }
   }
 }
