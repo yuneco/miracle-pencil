@@ -189,6 +189,7 @@ const preventEvent = (ev: TouchEvent) => {
   position: absolute;
   top: 8px;
   left: 0;
+  padding: 0 12px;
   gap: 6px;
   user-select: none !important;
   filter: drop-shadow(0px 0px 6px #00000033);

@@ -67,8 +67,8 @@ const emit = defineEmits<{
       color: #fff;
       padding-bottom: 16px;
       padding-top: 16px;
-      font-size: 3vw;
-      letter-spacing: 0.25vw;
+      font-size: 22px;
+      letter-spacing: 0.2em;
       text-align: center;
     }
     .body {

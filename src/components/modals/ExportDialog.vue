@@ -39,7 +39,7 @@
       </div>
       <div class="buttons">
         <PureButton @click="copy" :disabled="!state.selected">Copy</PureButton>
-        <PureButton @click="share" v-if="isShowShare">Share</PureButton>
+        <PureButton @click="share" v-if="isShowShare" :disabled="!state.selected">Share</PureButton>
       </div>
     </PlaneBox>
   </div>
