@@ -44,7 +44,6 @@ type EventEntry = ToolEvent | ModalEvent | ExportEvent | PaintActionEvent | Cust
 
 export const logEvent = (ent: EventEntry) => {
   gtag("event", `${ent.action}${ent.value ? '-' + ent.value : ''}`, {event_categoy: ent.category, event_action: ent.action, event_label: ent.value})
-  console.log(ent)
 }
 
 export const logToolEvent = (tool: ToolName) => logEvent({category: 'tool', action: 'tool-change', value: tool})
