@@ -1,6 +1,7 @@
 import { PaintCanvas, Coordinate, utils, Point } from 'sym-paint'
 import { computed, reactive, ref, watch } from 'vue'
 import { useCanvasStore } from '../../stores/CanvasStore'
+import { logEvent, logPaintEvent, logToolEvent, logToolSettingEvent } from '../analytics/logEvent'
 import { usePenCount } from './usePenCount'
 
 const canvas = ref<PaintCanvas | undefined>()
@@ -105,12 +106,15 @@ const init = (parent: HTMLElement) => {
     }
   )
   watch(
-    () => [store.penCount],
-    () => {
+    () => store.penCount,
+    (newVal, oldVal) => {
       cv.penCount = store.penCount
       if (store.penCount[0] === 1) {
         cv.isKaleido = [false, store.isKaleido[1]]
       }
+      const is2ndActivated = !!newVal[1] && !oldVal[1]
+      const is2ndDeactivated = !newVal[1] && !!oldVal[1]
+      if (is2ndActivated || is2ndDeactivated) logToolSettingEvent('tool-2nd', is2ndActivated)
     }
   )
   watch(
@@ -123,6 +127,7 @@ const init = (parent: HTMLElement) => {
     () => [store.isStraight],
     () => {
       cv.tool = store.isStraight ? 'draw:line' : 'draw'
+      logToolEvent(cv.tool)
     }
   )
   watch(
@@ -132,12 +137,14 @@ const init = (parent: HTMLElement) => {
       if (store.penCount[0] === 1) {
         cv.isKaleido = [false, store.isKaleido[1]]
       }
+      logToolSettingEvent('tool-kaleido', store.isKaleido[cv.hasSubPen ? 1 : 0])
     }
   )
   watch(
     () => [store.isEraser],
     () => {
       cv.penKind = store.isEraser ? 'eraser' : 'normal'
+      logToolSettingEvent('tool-eraser', store.isEraser)
     }
   )
   watch(
@@ -154,6 +161,7 @@ const init = (parent: HTMLElement) => {
       } else {
         cv.tool = store.tool
       }
+      logToolEvent(cv.tool)
     }
   )
   watch(
@@ -210,10 +218,12 @@ export const useSymPaint = () => {
       ]
       store.penCount = [store.penCount[0], 0]
       updateCanvasState()
+      logPaintEvent('clear')
     },
     undo: () => {
       canvas.value?.undo()
       updateCanvasState()
+      logPaintEvent('undo')
     },
     view2canvas: (p: { x: number; y: number }) =>
       canvas.value?.display2canvasPos(new Point(p.x, p.y), 'current'),

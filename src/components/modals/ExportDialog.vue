@@ -56,6 +56,7 @@ import PureButton from '../common/PureButton.vue'
 import { useAppStore } from '../../stores/AppStore'
 import { theme } from '../../consts/theme'
 import { ExportImgKind, useExportImgs } from '../../logics/canvas/useExportImgs'
+import { logCustomErrorEvent, logExportEvent } from '../../logics/analytics/logEvent'
 
 const IMG_BOX_SIZE = 220
 const appStore = useAppStore()
@@ -108,6 +109,12 @@ const copy = async () => {
   if (!selectedImg.value) return
   const copied = await copyImgToClipboard(selectedImg.value)
   appStore.$state.toast = copied ? 'copied!' : 'failed to copy img'
+  if (state.selected && copied) {
+    logExportEvent('export-copy', state.selected)
+  }
+  if (!copied) {
+    logCustomErrorEvent('ExportDialog.copy', 'failed to copy')
+  }
 }
 
 const share = async () => {
@@ -115,6 +122,9 @@ const share = async () => {
   const blob = await imgToBlob(selectedImg.value)
   if (!blob) return
   await shareImage(blob)
+  if (state.selected) {
+    logExportEvent('export-share', state.selected)
+  }
 }
 
 create()

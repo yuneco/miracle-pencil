@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 
-type ModalName = undefined | 'start' | 'export'
+export type ModalName = undefined | 'start' | 'export'
 type AppState = {
   modal: ModalName | undefined
   toast: string
