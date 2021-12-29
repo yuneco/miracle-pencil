@@ -149,7 +149,11 @@ const init = (parent: HTMLElement) => {
   watch(
     () => [store.tool],
     () => {
-      cv.tool = store.tool
+      if (store.tool === 'draw') {
+        cv.tool = store.isStraight ? 'draw:line' : 'draw'
+      } else {
+        cv.tool = store.tool
+      }
     }
   )
   watch(
@@ -200,7 +204,10 @@ export const useSymPaint = () => {
     clear: () => {
       canvas.value?.clear(true)
       store.coord = new Coordinate()
-      store.anchor = [new Coordinate(), new Coordinate({scroll: new Point(300, 0)})]
+      store.anchor = [
+        new Coordinate(),
+        new Coordinate({ scroll: new Point(300, 0) }),
+      ]
       store.penCount = [store.penCount[0], 0]
       updateCanvasState()
     },
