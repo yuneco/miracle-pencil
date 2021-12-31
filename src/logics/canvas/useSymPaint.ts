@@ -1,5 +1,6 @@
 import { PaintCanvas, Coordinate, utils, Point } from 'sym-paint'
 import { computed, reactive, ref, watch } from 'vue'
+import { theme } from '../../consts/theme'
 import { useCanvasStore } from '../../stores/CanvasStore'
 import { logCustomErrorEvent, logEvent, logPaintEvent, logToolEvent, logToolSettingEvent } from '../analytics/logEvent'
 import { usePenCount } from './usePenCount'
@@ -48,6 +49,7 @@ const init = (parent: HTMLElement) => {
   cv.anchor = store.anchor[0] as Coordinate
   cv.childAnchor = store.anchor[1] as Coordinate
   cv.enableCapture = false //スタンプ機能は当面使用しない
+  cv.anchorColor = theme.anchorColor // アンカー色はテーマの定数で指定
 
   // キャンバスからの変更要求を受け取りパレットの設定を変更
   cv.listenRequestZoom((scale) => {
@@ -200,7 +202,7 @@ export const useSymPaint = () => {
   const hasSubAnchor = computed(() => store.penCount[1] >= 1)
   const activeAnchor = computed(() => store.anchor[hasSubAnchor.value ? 1 : 0])
   const activeAnchorColor = computed(
-    () => canvas.value?.anchorColor[hasSubAnchor.value ? 1 : 0]
+    () => theme.anchorColor[hasSubAnchor.value ? 1 : 0]
   )
   const activeAnchorPos = computed(() =>
     canvas.value?.canvas2displayPos(activeAnchor.value.scroll, 'current')

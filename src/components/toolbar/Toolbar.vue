@@ -42,7 +42,7 @@
       />
     </div>
 
-    <div class="radioGroup">
+    <div class="radioGroup penGroup penGroup__1st">
       <SliderItem
         v-model="penCount1"
         label="PenCount"
@@ -59,7 +59,7 @@
       />
     </div>
 
-    <div class="radioGroup">
+    <div class="radioGroup penGroup penGroup__2nd">
       <CheckItem v-model="has2nd" edge="left" icon="2nd" />
       <SliderItem
         v-model="penCount2"
@@ -93,6 +93,7 @@ import { computed } from 'vue'
 import { SwitchOption } from './items/switch/SwitchOption'
 import { useAppStore } from '../../stores/AppStore'
 import { PEN_COUNT_RANGE_1, PEN_COUNT_RANGE_2 } from '../../logics/consts/toolConsts'
+import { theme } from '../../consts/theme'
 
 const store = useCanvasStore()
 const appStore = useAppStore()
@@ -178,6 +179,12 @@ const preventEvent = (ev: TouchEvent) => {
   }
   ev.preventDefault()
 }
+
+const anchorColor = computed(() => {
+  const inactiveColor = '#ccc'
+  const is1st = store.$state.penCount[1] === 0
+  return is1st ? [theme.anchorColor[0], 'transparent'] : [inactiveColor, theme.anchorColor[1]]
+})
 </script>
 
 <style lang="scss" scoped>
@@ -200,6 +207,29 @@ const preventEvent = (ev: TouchEvent) => {
   .radioGroup {
     display: flex;
     gap: 0;
+  }
+
+  .penGroup {
+    position: relative;
+    &::after {
+      $margin: 1px;
+      position: absolute;
+      content: '';
+      width: calc(100% - #{$margin *2});
+      height: 2px;
+      left: $margin;
+      bottom: 4px;
+      border-radius: 4px;
+      background-color: transparent;
+      transition: background-color .2s;
+      opacity: .7;
+    }
+    &__1st::after {
+      background-color: v-bind('anchorColor[0]');
+    }
+    &__2nd::after {
+      background-color: v-bind('anchorColor[1]');
+    }
   }
 }
 </style>

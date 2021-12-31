@@ -5,7 +5,8 @@
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
     "serve": "vite preview",
-    "format": "prettier src/**/*.{ts,vue} --write"
+    "format": "prettier src/**/*.{ts,vue} --write",
+    "upgrade-sympaint": "yarn upgrade sym-paint --network-concurrency 1"
   },
   "dependencies": {
     "pinia": "^2.0.0",

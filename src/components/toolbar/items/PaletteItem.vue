@@ -100,7 +100,6 @@ const borderStyle = computed(() => {
     background-color: #ddd;
     transition: background-color 0s;
   }
-
   .content {
     display: inline-block;
     position: relative;
