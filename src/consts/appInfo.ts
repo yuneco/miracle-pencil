@@ -1,5 +1,5 @@
 export const REPOSITORY = 'https://github.com/yuneco/miracle-pencil'
-export const VERSION = '0.0.1'
-export const RELEASE_DATE = '2021.12.30'
+export const VERSION = '0.0.2'
+export const RELEASE_DATE = '2021.12.31'
 export const AUTHOR = '@yuneco'
 export const AUTHOR_TW = 'https://twitter.com/yuneco'

@@ -1,5 +1,5 @@
 import { useCanvasStore } from '../../stores/CanvasStore'
-import { PEN_COUNT_RANGE_1, PEN_COUNT_RANGE_2 } from '../consts/toolConsts'
+import { PEN_COUNT_RANGE_1, PEN_COUNT_RANGE_2 } from '../../consts/toolConsts'
 import { constraint } from '../utils/mathUtil'
 
 export const usePenCount = () => {

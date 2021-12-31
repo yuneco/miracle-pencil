@@ -92,7 +92,7 @@ import { useCanvasStore } from '../../stores/CanvasStore'
 import { computed } from 'vue'
 import { SwitchOption } from './items/switch/SwitchOption'
 import { useAppStore } from '../../stores/AppStore'
-import { PEN_COUNT_RANGE_1, PEN_COUNT_RANGE_2 } from '../../logics/consts/toolConsts'
+import { PEN_COUNT_RANGE_1, PEN_COUNT_RANGE_2 } from '../../consts/toolConsts'
 import { theme } from '../../consts/theme'
 
 const store = useCanvasStore()
