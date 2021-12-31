@@ -1,5 +1,5 @@
 <template>
-  <div class="SideToolbar">
+  <div class="SideToolbar" @touchstart="preventEvent">
     <CheckItem v-model="isAnchorRotateTool" icon="rotate" cornerStyle="round" />
     <CheckItem v-model="isAnchorMoveTool" icon="move" cornerStyle="round" />
     <div class="clear">
@@ -81,6 +81,11 @@ const confirmAndClear = async () => {
 
 const info = () => {
   appStore.modal = 'start'
+}
+
+// パレット上でのズームやテキスト選択を防止するためpreventDefaultする
+const preventEvent = (ev: TouchEvent) => {
+  ev.preventDefault()
 }
 </script>
 
