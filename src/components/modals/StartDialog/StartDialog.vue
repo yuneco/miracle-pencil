@@ -28,9 +28,13 @@
           <div class="repo">
             See <a :href="INFO.REPOSITORY" target="blank" rel="noopener">GitHub repository</a> for more information.
           </div>
+          <div class="new" v-if="hasNew">
+            🌟 New version available. Tap 'Reload' to update.
+          </div>
         </div>
         <div class="buttons">
           <PureButton @click="emit('close')">OK</PureButton>
+          <PureButton @click="reload">Reload App</PureButton>
         </div>
       </div>
     </PlaneBox>
@@ -38,15 +42,30 @@
 </template>
 
 <script lang="ts" setup>
+import {ref, onMounted} from 'vue'
 import CloseButton from '../../common/CloseButton.vue'
 import PlaneBox from '../../common/PlaneBox.vue'
 import PureButton from '../../common/PureButton.vue'
 import { theme } from '../../../consts/theme'
 import *  as INFO from '../../../consts/appInfo'
+import { useConfirmStore } from '../../../stores/ConfirmStore'
+import { hasNewVersion } from '../../../logics/versionCheck/hasNewVersion'
+const {confirm} = useConfirmStore()
 
 const emit = defineEmits<{
   (e: 'close'): void
 }>()
+
+const reload = async () => {
+  const isOk = (await confirm('Reloading screen will clear the canvas. Is it ok with you?', 'RELOAD', 'Cancel', 'danger')) === 'yes'
+  if (!isOk) return
+  window.location.reload()
+}
+
+const hasNew = ref(false)
+onMounted(async () => {
+  hasNew.value = await hasNewVersion()
+})
 </script>
 
 <style lang="scss" scoped>
@@ -89,7 +108,12 @@ const emit = defineEmits<{
       a {
         color: rgb(253, 220, 113);
       }
-    }
+
+      .new {
+        text-align: center;
+      }
+
+}
     .buttons {
       display: flex;
       align-items: center;

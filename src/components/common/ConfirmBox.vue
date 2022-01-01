@@ -1,24 +1,26 @@
 <template>
-  <transition name="fade">
-    <div class="ConfirmBox" v-if="content">
-      <div class="bg"></div>
-      <div class="content">
-        <div class="text">{{ content.message }}</div>
-        <div class="buttons">
-          <PureButton @click="store.select('yes')" class="yes" :color="color">
-            {{ content.yesCaption }}
-          </PureButton>
-          <PureButton
-            v-if="content.noCaption"
-            @click="store.select('no')"
-            class="no"
-          >
-            {{ content.noCaption }}
-          </PureButton>
+  <teleport to="body">
+    <transition name="fade">
+      <div class="ConfirmBox" v-if="content">
+        <div class="bg"></div>
+        <div class="content">
+          <div class="text">{{ content.message }}</div>
+          <div class="buttons">
+            <PureButton @click="store.select('yes')" class="yes" :color="color">
+              {{ content.yesCaption }}
+            </PureButton>
+            <PureButton
+              v-if="content.noCaption"
+              @click="store.select('no')"
+              class="no"
+            >
+              {{ content.noCaption }}
+            </PureButton>
+          </div>
         </div>
       </div>
-    </div>
-  </transition>
+    </transition>
+  </teleport>
 </template>
 
 <script lang="ts" setup>
@@ -40,6 +42,8 @@ const color = computed(() =>
   z-index: 1;
   width: 100%;
   height: 100%;
+  top: 0;
+  left: 0;
   display: flex;
   justify-content: center;
   align-items: center;

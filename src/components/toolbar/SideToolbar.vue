@@ -22,12 +22,14 @@
     </div>
 
     <div class="info">
+      <div class="infoItem" :class="{infoItem__new: hasNew}">
       <PaletteItem
         @check="info"
         icon="info"
         label=""
         cornerStyle="round"
       />
+      </div>
     </div>
 
 </div>
@@ -40,10 +42,12 @@ import CheckItem from './items/CheckItem.vue'
 import PaletteItem from './items/PaletteItem.vue'
 import { useConfirmStore } from '../../stores/ConfirmStore'
 import { useAppStore } from '../../stores/AppStore'
+import { useVersionCheck } from '../../logics/versionCheck/useVersionCheck'
 
 const { state: store, clear, undo, enableUndo } = useSymPaint()
 const { confirm } = useConfirmStore()
 const appStore = useAppStore()
+const hasNew = useVersionCheck()
 
 const isAnchorRotateTool = computed({
   set: (v: boolean) => {
@@ -119,6 +123,21 @@ const preventEvent = (ev: TouchEvent) => {
   }
   .info {
     padding-top: 20vh;
+    .infoItem {
+      position: relative;
+      &__new::after {
+        position: absolute;
+        content: '';
+        top: 0;
+        left: calc(50% - 18px);
+        width: 8px;
+        height: 8px;
+        border-radius: 8px;
+        background-color: rgb(236, 82, 128);
+        border: 1px solid #fff;
+        pointer-events: none;
+      }
+    }
   }
 }
 </style>
