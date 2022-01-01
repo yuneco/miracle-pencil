@@ -29,12 +29,12 @@
             See <a :href="INFO.REPOSITORY" target="blank" rel="noopener">GitHub repository</a> for more information.
           </div>
           <div class="new" v-if="hasNew">
-            🌟 New version available. Tap 'Reload' to update.
+            🌟 New version available. Reload to update 🌟
           </div>
         </div>
         <div class="buttons">
           <PureButton @click="emit('close')">OK</PureButton>
-          <PureButton @click="reload">Reload App</PureButton>
+          <PureButton v-if="shouldShowReload" @click="reload">Reload App</PureButton>
         </div>
       </div>
     </PlaneBox>
@@ -50,12 +50,14 @@ import { theme } from '../../../consts/theme'
 import *  as INFO from '../../../consts/appInfo'
 import { useConfirmStore } from '../../../stores/ConfirmStore'
 import { hasNewVersion } from '../../../logics/versionCheck/hasNewVersion'
+import { isInPwa } from '../../../logics/versionCheck/isInPwa'
 const {confirm} = useConfirmStore()
 
 const emit = defineEmits<{
   (e: 'close'): void
 }>()
 
+const shouldShowReload = isInPwa()
 const reload = async () => {
   const isOk = (await confirm('Reloading screen will clear the canvas. Is it ok with you?', 'RELOAD', 'Cancel', 'danger')) === 'yes'
   if (!isOk) return
