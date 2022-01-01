@@ -3206,8 +3206,8 @@ svg-variable-width-line@^0.1.2:
   integrity sha512-Lk4U09bsR7ieZEGd+m7tzOg2asXt5fgJUPQ8BpktKxK8zsz68lcvqkrdPCqscn5WhtZG/1tZpnOyOah9OdZL6g==
 
 "sym-paint@https://github.com/yuneco/symmpaint.git":
-  version "0.0.17"
-  resolved "https://github.com/yuneco/symmpaint.git#4822bc078f4f3bf9d4149034f0ec26435702b84f"
+  version "0.0.18"
+  resolved "https://github.com/yuneco/symmpaint.git#b12d2e8a7415cf855ab653bf2d67ec853b54b008"
   dependencies:
     svg-variable-width-line "^0.1.2"
 
