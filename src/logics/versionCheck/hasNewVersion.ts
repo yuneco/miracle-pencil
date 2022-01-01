@@ -7,7 +7,7 @@ const getCurrentAppSrc = (): string | undefined => {
 
 const isSrcExists = async (src: string): Promise<boolean | undefined> => {
   try {
-    const resp = await window.fetch(src)
+    const resp = await window.fetch(src, { method: 'HEAD' })
     if (resp.status === 200 || resp.status === 304) return true
     if (resp.status === 404) return false
     return undefined
