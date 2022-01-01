@@ -1,4 +1,5 @@
 import { ref } from "vue"
+import { useOnPageVisible } from "../utils/useOnPageVisible"
 import { hasNewVersion } from "./hasNewVersion"
 import { isInPwa } from "./isInPwa"
 
@@ -16,5 +17,6 @@ const doCheck = async () => {
 
 export const useVersionCheck = () => {
   doCheck()
+  useOnPageVisible(doCheck)
   return hasNew
 }
