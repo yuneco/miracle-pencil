@@ -1,7 +1,7 @@
 const getCurrentAppSrc = (): string | undefined => {
   const src = Array.from(document.querySelectorAll('script'))
     .map((el) => el.src)
-    .filter((src) => src.includes('/assets/index.js'))[0]
+    .filter((src) => src.includes('/assets/index.'))[0]
   return src ?? undefined
 }
 
